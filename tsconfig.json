@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "types": ["google-apps-script"],
+        "strict": true,
+        "lib": ["esnext"],
+        "experimentalDecorators": true,
+        "outDir": "./dist",
+        "allowJs": true,
+        "target": "es6"
+    },
+        "include": [
+        "./src/**/*"
+    ]
+}
