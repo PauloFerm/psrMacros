@@ -25,20 +25,23 @@ namespace InsulationEE {
     [ NaN, 15.13, 32.85, 53.99 ]
   ];
 
-  export function thisTube(pipeExternalDiameter: number, thickness: number): Piping.tube {
+  export function thisTube(
+    pipeExternalDiameter: number,
+    thickness: number
+  ): Piping.tube {
 
     let thicknessIndex = thicknesses.indexOf(thickness);
-    let closestDiameter = Math.min(...diameters.filter( d => d > pipeExternalDiameter));
+    let closestDiameter = MathUtils.closestValue(diameters, pipeExternalDiameter);
     let diameterIndex = diameters.indexOf(closestDiameter);
     
     if (thicknessIndex < 0 || diameterIndex < 0) {
-      throw `Insulation d: ${diameterIndex}, e: ${thicknessIndex} doesn't exists`;
+      throw `Insulation d: ${pipeExternalDiameter}, e: ${thickness} doesn't exists`;
     }
 
     let thisPrice = price[diameterIndex][thicknessIndex];
 
     if (thisPrice == NaN ) {
-      throw `Insulation d: ${diameterIndex}, e: ${thicknessIndex} doesn't exists`;
+      throw `Insulation d: ${pipeExternalDiameter}, e: ${thickness} doesn't exists`;
     }
 
     return {

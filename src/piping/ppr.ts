@@ -2,6 +2,7 @@
  * PPR Pipes data compendium
  */
 namespace PPR {
+  export type pprDiameter = 20|25|32|40|50|63|75|90|110;
 
   const roughness = 2e-4;
   const conductivity = 0.2;
@@ -14,7 +15,7 @@ namespace PPR {
 
   export function Pipe(
     pressure: "PN20"|"PN16", 
-    diameter: 20|25|32|40|50|63|75|90|110): Piping.pipe {
+    diameter: PPR.pprDiameter): Piping.pipe {
 
     let pressureIndex = pressuresNominal.indexOf(pressure);
     let diameterIndex = diametersNominal.indexOf(diameter);
@@ -47,7 +48,7 @@ namespace PPR {
  */
 function pprPressureLoss(
   pressure: "PN20"|"PN16",
-  diameter: 20|25|32|40|50|63|75|90|110,
+  diameter: PPR.pprDiameter,
   flowrate: number): number {
 
   let thisPipe: Piping.pipe = PPR.Pipe(pressure, diameter);
@@ -57,7 +58,7 @@ function pprPressureLoss(
 
 function pprHeatLoss(
   pressure: "PN20"|"PN16",
-  diameter: 20|25|32|40|50|63|75|90|110,
+  diameter: PPR.pprDiameter,
   temperatureDelta: number,
   insulationThickness?: 9|13|19|25): number {
 
