@@ -4,8 +4,17 @@
 namespace FluidMechanics {
   // This interface must be a class to get temperature dependent
   // viscosity, density, Cp and other properties.
-  export interface fluid { density: number; viscosity: number; }
-  export const water: fluid = {density: 1000, viscosity: 4e-7 }
+  export interface fluid extends Material.material { 
+    density: number; 
+    viscosity: number | MathUtils.Polynomial; 
+  }
+
+  export const water: fluid = {
+    name: 'Water',
+    thermalConductivity: 0.58,
+    density: 1000, 
+    viscosity: 4e-7 
+  }
 
   /**
    * Return the Reynolds number
