@@ -47,7 +47,7 @@ namespace HeatTransfer {
         if (typeof material.thermalConductivity == 'number') {
           return material.thermalConductivity;
         } else {
-          return material.thermalConductivity.evaluate(25); // 25 deg C
+          return material.thermalConductivity.evaluate(80); // wool density
         }
       });
 

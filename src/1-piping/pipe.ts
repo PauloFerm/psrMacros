@@ -13,7 +13,7 @@ namespace Piping {
 
   export interface pipe extends tube {
     roughness: number;    // m?
-    area: number; // m^2
+    area: number;         // m^2
   }
 
   /**
@@ -29,8 +29,10 @@ namespace Piping {
 
     let velocity = flowrate * (1 / 3600) / pipe.area; // m^3/h -> m^3/s
     let diameter = pipe.diameter.internal / 1000;     // mm -> m
+    let viscosity = typeof fluid.viscosity == 'number' ? 
+      fluid.viscosity : fluid.viscosity.evaluate(60);
 
-    let reynolds = FluidMechanics.reynolds(velocity, diameter, fluid.viscosity);
+    let reynolds = FluidMechanics.reynolds(velocity, diameter, viscosity);
     let friction = FluidMechanics.colebrookWhite(pipe.roughness, diameter, reynolds);
     let loss = FluidMechanics.darcyWeisbach(friction, fluid.density, velocity, diameter);
 

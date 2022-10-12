@@ -1,21 +1,25 @@
 namespace Material {
+
   export interface material {
     name: string;
     thermalConductivity: number | MathUtils.Polynomial;
     strength?: {
-      yield: number;
-      compressive: number;
-      tensile: number;
-      fatigue: number;
-      impact: number;
+      yield?: number;
+      compressive?: number;
+      tensile?: number;
+      fatigue?: number;
+      impact?: number;
     }
     youngModulus?: number;
   }
 
+
+  /**
+   *  @param thermalConductivity is a density dependent polinomial
+   */
   export const mineralWool: material = {
     name: 'Mineral Wool',
-    // Thermal Conductivity is a density dependent function
-    thermalConductivity: new MathUtils.Polynomial([5.16e-2, 3.94e-4, 2.32e-6])
+    thermalConductivity: new MathUtils.Polynomial([ 5.16e-2, 3.94e-4, 2.32e-6 ])
   };
 
   export const elastomericFoam: material = { name: 'Elastomeric Foam', thermalConductivity: 0.031 };

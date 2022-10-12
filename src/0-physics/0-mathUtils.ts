@@ -1,11 +1,11 @@
 namespace MathUtils {
-  export class Polynomial{
+  export class Polynomial {
     coefficients: number[];
-
+  
     constructor(coefficients: number[]) {
       this.coefficients = coefficients;
     }
-
+  
     evaluate(x: number): number {
       return this.coefficients
         .map(c => c * x)
@@ -14,7 +14,7 @@ namespace MathUtils {
   }
 
   export function dotProduct(
-    array0: number[], 
+    array0: number[],
     array1: number[]
   ): number {
     
@@ -22,14 +22,14 @@ namespace MathUtils {
       throw 'Arrays have different sizes!';
     }
 
-    return array0.map((x, i) => array0[i] * array1[i] )
+    return array0.map((x, i) => array0[i] * array1[i])
       .reduce((sum, now) => sum + now, 0);
   }
 
   export function closestValue(
     array: number[],
     value: number,
-    up: boolean = true 
+    up: boolean = true
   ): number {
 
     let response = NaN;

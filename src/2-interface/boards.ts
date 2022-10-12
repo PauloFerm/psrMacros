@@ -18,7 +18,7 @@ namespace StatusBoard {
   export function cropBoard(range: GoogleAppsScript.Spreadsheet.Range) {
     let values = range.getValues();
     
-    let title = values[0][0];
+    let title: any = values[0][0];
     
     return title
   }
