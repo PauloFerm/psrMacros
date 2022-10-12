@@ -2,12 +2,17 @@
  * PPR Pipes data compendium
  */
 namespace PPR {
-  export type pprDiameter = 20|25|32|40|50|63|75|90|110;
+
+  const diametersNominal = <const>[ 20, 25, 32, 40, 50, 63, 75, 90, 110 ];
+  const pressuresNominal = <const>[ "PN16", "PN20" ];
+
+  // export type pprDiameter = 20|25|32|40|50|63|75|90|110;
+  export type pprDiameter = typeof diametersNominal[number];
+  export type pprPressure = typeof pressuresNominal[number];
 
   const roughness = 2e-4;
   const conductivity = 0.2;
-  const pressuresNominal = [ "PN16", "PN20" ];
-  const diametersNominal = [ 20, 25, 32, 40, 50, 63, 75, 90, 110 ];
+  
   const thickness = [
     [ 2.8, 3.5, 4.5, 5.6, 6.9, 8.7, 10.4, 12.5, 15.2 ],
     [ 3.4, 4.2, 5.4, 6.7, 8.4, 10.5, 12.5, 15.0, 18.4 ]
