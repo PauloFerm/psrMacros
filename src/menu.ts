@@ -2,16 +2,16 @@ function onOpen() {
   let ui = SpreadsheetApp.getUi()
   ui.createMenu('PSR')
     .addSubMenu(ui.createMenu('Boards')
-      .addItem('Update Board', 'updateBoard'))
+      .addItem('Parse Selected', 'parseBoard'))
     .addToUi();
 
 }
 
-function updateBoard() {
+function parseBoard() {
   let sheet = SpreadsheetApp.getActiveSheet();
   let range = SpreadsheetApp.getActiveRange();
 
-  let title = StatusBoard.cropBoard(range)
+  let board = StatusBoard.parseBoard(range)
 
-  SpreadsheetApp.getUi().alert(title);
+  SpreadsheetApp.getUi().alert(JSON.stringify(board));
 }
