@@ -50,10 +50,10 @@ namespace StatusBoard {
 
     // Last row doesn't trigger the empty row condition
     if (properties.length > 0) {
-      sections.push({ title: subtitle, properties: properties })
+      sections.push({ title: subtitle, properties: properties });
     }
     
-    let thisBoard = { title: title, sections: sections }
+    let thisBoard = { title: title, sections: sections };
 
     return thisBoard
   }
