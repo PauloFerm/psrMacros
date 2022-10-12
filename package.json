@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "update": "clasp push && cd gs && clasp pull && cd .."
+  },
   "dependencies": {
     "@types/google-apps-script": "^1.0.55"
   }

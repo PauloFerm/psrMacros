@@ -2,11 +2,9 @@
     "compilerOptions": {
         "types": ["google-apps-script"],
         "strict": true,
-        "lib": ["esnext"],
         "experimentalDecorators": true,
-        "outDir": "./dist",
         "allowJs": true,
-        "target": "es6"
+        "target": "ES2019"
     },
         "include": [
         "./src/**/*"
