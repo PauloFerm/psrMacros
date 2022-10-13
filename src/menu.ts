@@ -33,8 +33,8 @@ function updateRadiator() {
 
   let values = range.getValues();
 
-  if (values[0].length != 4) {
-    throw "Number of columns must be 4";
+  if (values[0].length != 5) {
+    throw "Number of columns must be 5";
   }
 
   for (let i = 0; i < values.length; i++) {
@@ -44,7 +44,8 @@ function updateRadiator() {
     values[i][1] = radiator.power.kw;
     values[i][2] = radiator.power.kcalh;
     values[i][3] = radiator.flow;
-    
+    values[i][4] = radiator.price;
+
   }
 
   range.setValues(values);
