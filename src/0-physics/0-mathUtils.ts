@@ -27,10 +27,10 @@ namespace MathUtils {
   }
 
   export function closestValue(
-    array: number[],
+    array: readonly number[],
     value: number,
     up: boolean = true
-  ): number {
+  ) {
 
     let response = NaN;
 
