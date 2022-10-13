@@ -7,7 +7,8 @@ namespace HeatTransfer {
     conductivity: number
   ): number {
 
-    return Math.log(externalDiameter / internalDiameter) / conductivity;
+    return Math.log(externalDiameter / internalDiameter) 
+                      / (2 * Math.PI * conductivity );
   }
 
   export function planarResistence(
@@ -17,22 +18,22 @@ namespace HeatTransfer {
     return thickness * conductivity;
   }
 
-  export function pipeInsulated(
+  export function pipeInsulatedResistence(
     pipe: Piping.pipe,
     insulation: Piping.tube
   ): number {
 
     let pipeResistence = HeatTransfer.cylindricResistence(
-          pipe.diameter.external, 
-          pipe.diameter.internal, 
+          pipe.diameter.external / 1000, 
+          pipe.diameter.internal / 1000, 
           pipe.conductivity);
 
     let insuResistence = HeatTransfer.cylindricResistence(
-          insulation.diameter.external, 
-          pipe.diameter.external, 
+          insulation.diameter.external / 1000, 
+          pipe.diameter.external / 1000, 
           insulation.conductivity);
 
-    return (2 * Math.PI) / (pipeResistence + insuResistence);
+    return pipeResistence + insuResistence;
   }
 
   export function multiLayerWall(

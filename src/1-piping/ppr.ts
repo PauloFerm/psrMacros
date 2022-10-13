@@ -68,13 +68,14 @@ function pprHeatLoss(
   insulationThickness?: 9|13|19|25): number {
 
   let thisPipe: Piping.pipe = PPR.Pipe(pressure, diameter);
+  let resistence = NaN;
 
-  if (insulationThickness != null) {
+  if (insulationThickness == null) {
 
-    return HeatTransfer.cylindricResistence(
-      thisPipe.diameter.external,
-      thisPipe.diameter.internal,
-      thisPipe.conductivity) * temperatureDelta ;
+    resistence = HeatTransfer.cylindricResistence(
+      thisPipe.diameter.external / 1000,
+      thisPipe.diameter.internal / 1000,
+      thisPipe.conductivity);
 
   } else if (insulationThickness != null) {
 
@@ -82,10 +83,13 @@ function pprHeatLoss(
       thisPipe.diameter.external,
       insulationThickness);
 
-    return HeatTransfer.pipeInsulated(thisPipe, thisInsulation) * temperatureDelta;
+    resistence = HeatTransfer.pipeInsulatedResistence(thisPipe, thisInsulation);
+    
 
   } else {
     throw "Something is wrong with the pprHeatLoss"
   }
+
+  return temperatureDelta / resistence;
 
 }
