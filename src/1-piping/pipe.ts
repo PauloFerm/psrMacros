@@ -1,3 +1,6 @@
+/**
+ * Piping resources compendium
+ */
 namespace Piping {
   export interface tube {
     material: string;

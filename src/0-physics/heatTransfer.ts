@@ -1,6 +1,15 @@
-
+/**
+ * Heat transfer compendium
+ */
 namespace HeatTransfer {
-
+  
+  /**
+   * Cilindric thermal resistence
+   * @param externalDiameter - External wall diameter
+   * @param internalDiameter - Internal wall diameter
+   * @param conductivity - Material thermal conductivity
+   * @returns thermal resistence in W/m k
+   */
   export function cylindricResistence(
     externalDiameter: number, 
     internalDiameter: number, 
@@ -11,13 +20,25 @@ namespace HeatTransfer {
                       / (2 * Math.PI * conductivity );
   }
 
+  /**
+   * Planar thermal resistence 
+   * @param thickness - wall thickness in mm
+   * @param conductivity - thermal conductivity in W/mK
+   * @returns 
+   */
   export function planarResistence(
-    thickness: number,    // mm
-    conductivity: number  // W/mK
+    thickness: number,
+    conductivity: number
   ): number {
-    return thickness * conductivity;
+    return conductivity / (thickness / 1000);
   }
 
+  /**
+   * Thermal resistence of an insutlated pipe
+   * @param pipe - Pipe Object
+   * @param insulation - Insulation Tube Object
+   * @returns Total thermal resistence
+   */
   export function pipeInsulatedResistence(
     pipe: Piping.pipe,
     insulation: Piping.tube
@@ -36,6 +57,12 @@ namespace HeatTransfer {
     return pipeResistence + insuResistence;
   }
 
+  /**
+   * Thermal resistence of a multilayer wall
+   * @param materials - Layer's material array
+   * @param thicknesses - Layer's thicknesses
+   * @returns Total thermal resistence
+   */
   export function multiLayerWall(
     materials: Material.material[], 
     thicknesses: number[]
@@ -52,7 +79,19 @@ namespace HeatTransfer {
         }
       });
 
-      return MathUtils.dotProduct(conductivities, thicknesses);
-      
+      let resistences = materials.map((material, i) => {
+        if (typeof material.thermalConductivity == 'number') {
+          return planarResistence(
+            thicknesses[i], 
+            material.thermalConductivity);
+        } else {
+          return planarResistence(
+            thicknesses[i], 
+            material.thermalConductivity.evaluate(60));
+        }
+        
+      });
+
+      return resistences.reduce((sum, now) => sum + now, 0);
     }
 }

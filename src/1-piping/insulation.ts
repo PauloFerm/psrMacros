@@ -25,6 +25,12 @@ namespace InsulationEE {
     [ NaN, 15.13, 32.85, 53.99 ]
   ];
 
+  /**
+   * Insulation tube selection
+   * @param pipeExternalDiameter - Pipe external piping 
+   * @param thickness - Insulation tickness
+   * @returns Tube Object selected
+   */
   export function thisTube(
     pipeExternalDiameter: number,
     thickness: number

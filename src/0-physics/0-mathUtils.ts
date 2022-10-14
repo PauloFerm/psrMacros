@@ -1,4 +1,10 @@
+/**
+ * Math Utils compendium
+ */
 namespace MathUtils {
+  /**
+   * Polynomial coefficient and evaluator
+   */
   export class Polynomial {
     coefficients: number[];
   
@@ -13,19 +19,31 @@ namespace MathUtils {
     }
   }
 
+  /**
+   * Dot product between two arrays
+   * @param array0 - a_i
+   * @param array1 - b_i
+   * @returns sum(a_i * a_b)
+   */
   export function dotProduct(
     array0: number[],
     array1: number[]
   ): number {
     
     if (array0.length != array1.length) {
-      throw 'Arrays have different sizes!';
+      throw 'Arrays must have same sizes!';
     }
 
     return array0.map((x, i) => array0[i] * array1[i])
       .reduce((sum, now) => sum + now, 0);
   }
 
+  /**
+   * Pick the closest value in array
+   * @param array - Array with values
+   * @param value - Value to search
+   * @param up - Round up?
+   */
   export function closestValue(
     array: readonly number[],
     value: number,

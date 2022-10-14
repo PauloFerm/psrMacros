@@ -9,6 +9,9 @@ function onOpen() {
 
 }
 
+/**
+ * Setting board parser 
+ */
 function parseBoard() {
   let sheet = SpreadsheetApp.getActiveSheet();
   let range = SpreadsheetApp.getActiveRange();
@@ -18,6 +21,9 @@ function parseBoard() {
   SpreadsheetApp.getUi().alert(JSON.stringify(board));
 }
 
+/**
+ * Insert radiator model validation
+ */
 function validateRadiator() {
   let range = SpreadsheetApp.getActiveRange();
   
@@ -28,6 +34,9 @@ function validateRadiator() {
   range.setDataValidation(rule);
 }
 
+/**
+ * Update radiator data
+ */
 function updateRadiator() {
   let range = SpreadsheetApp.getActiveRange();
 

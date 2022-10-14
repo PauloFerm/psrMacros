@@ -18,8 +18,14 @@ namespace PPR {
     [ 3.4, 4.2, 5.4, 6.7, 8.4, 10.5, 12.5, 15.0, 18.4 ]
   ];
 
+  /**
+   * PPR Pipe selection
+   * @param pressure - Nominal pressure PN16 | PN20
+   * @param diameter - Nominal diameter
+   * @returns Pipe Object
+   */
   export function Pipe(
-    pressure: "PN20"|"PN16", 
+    pressure: "PN20" | "PN16", 
     diameter: PPR.pprDiameter): Piping.pipe {
 
     let pressureIndex = pressuresNominal.indexOf(pressure);
@@ -39,7 +45,7 @@ namespace PPR {
         external: diameter
       },
       area: thisArea
-    }
+    };
 
     return thisPipe
   }
@@ -61,6 +67,15 @@ function pprPressureLoss(
   return Piping.pressureLoss(FluidMechanics.water, thisPipe, flowrate);
 }
 
+
+/**
+ * Heat Loss in a PPR pipe
+ * @param pressure - Nominal pressure: PN16 | PN20
+ * @param diameter - Nominal diameter in mm
+ * @param temperatureDelta - Temperature difference between fluid and exterior
+ * @param insulationThickness - Insulation thickness in mm
+ * @returns Heat loss rate in W/m 
+ */
 function pprHeatLoss(
   pressure: "PN20"|"PN16",
   diameter: PPR.pprDiameter,

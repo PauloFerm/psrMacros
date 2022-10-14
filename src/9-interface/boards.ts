@@ -53,7 +53,7 @@ namespace StatusBoard {
       sections.push({ title: subtitle, properties: properties });
     }
     
-    let thisBoard = { title: title, sections: sections };
+    let thisBoard: board = { title: title, sections: sections };
 
     return thisBoard
   }

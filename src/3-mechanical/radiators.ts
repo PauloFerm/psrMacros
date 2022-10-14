@@ -4,6 +4,9 @@ namespace Radiator {
                             2000, 2200, 2400, 2600, 2800, 3000 ];
   const models = [ "EK 500",	"DK 300",	"DK 500" ];
   
+  /**
+   * Returns all Ocean Radiator model names
+   */
   export function allModels(): string[] {
     let list: string[] = [];
 
@@ -76,6 +79,11 @@ namespace Radiator {
     [301, 411, 533]
   ];
 
+  /**
+   * Select radiator by model
+   * @param model - Model name
+   * @returns Radiator Object selected
+   */
   export function select(model: string): Radiator.radiator {
     let [modelPanelHeight, modelWidth] = model.split("/");
     let [thisPanel, modelHeight] = modelPanelHeight.split(" ");
