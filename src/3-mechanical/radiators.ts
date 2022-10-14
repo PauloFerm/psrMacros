@@ -30,6 +30,7 @@ namespace Radiator {
       kcalh: number
     };
     flow: number;
+    volume: number;
     price?: number;
   };
 
@@ -112,6 +113,7 @@ namespace Radiator {
       height: thisHeight,
       thicknees: 100,
       flow: power[widthIndex][modelIndex] / 860.42 / 11,
+      volume: thisWidth / 104.167,
       power: {
         kcalh: power[widthIndex][modelIndex],
         kw: power[widthIndex][modelIndex] / 860.42
