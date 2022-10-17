@@ -40,22 +40,30 @@ function validateRadiator() {
  * Update radiator data
  */
 function updateRadiator() {
-  let range = SpreadsheetApp.getActiveRange();
-
+  let range = InterfaceUtils.rangeByName("Radiators");
   let values = range.getValues();
+  let formulas = range.getFormulas();
 
-  if (values[0].length != 5) {
-    throw "Number of columns must be 5";
+  if (values[0].length != 7) {
+    throw "Number of columns must be 7";
   }
 
-  for (let i = 0; i < values.length; i++) {
-    let model = values[i][0];
+  for (let i = 2; i < values.length; i++) {
+    if (InterfaceUtils.isEmptyLine(values[i])) {
+      continue;
+    } else if (! InterfaceUtils.isEmptyLine(formulas[i])) {
+      values[i] = formulas[i];
+      continue;
+    }
+
+    let model = values[i][1];
     let radiator = Radiator.select(model);
 
-    values[i][1] = radiator.power.kw;
-    values[i][2] = radiator.power.kcalh;
-    values[i][3] = radiator.flow;
-    values[i][4] = radiator.price;
+    values[i][2] = radiator.power.kw;
+    values[i][3] = radiator.power.kcalh;
+    values[i][4] = radiator.flow;
+    values[i][5] = radiator.volume;
+    values[i][6] = radiator.price;
 
   }
 
@@ -63,11 +71,11 @@ function updateRadiator() {
 }
 
 /**
- * Update heat loss on piping
+ * Update heat loss on piping sections
  */
 function updatePipeHeatLoss() {
-  let conditionsRange = InterfaceUtils.rangeByName("CondicionesSistemaCalefaccion");
-  let pipeDiameterRange = InterfaceUtils.rangeByName("PipeSectionDiameter");
+  let conditionsRange = InterfaceUtils.rangeByName("HeatSystemConditions");
+  let pipeDiameterRange = InterfaceUtils.rangeByName("PipeSection");
   let pipeInsulationRange = InterfaceUtils.rangeByName("PipeSectionHeat")
 
   let conditions = StatusBoard.parseBoard(conditionsRange).sections
@@ -119,9 +127,12 @@ function updatePipeHeatLoss() {
   pipeInsulationRange.setValues(insulatedValues);
 }
 
+/**
+ * Update Flow State on piping sections
+ */
 function updatePipeFlowState() {
-  let conditionsRange = InterfaceUtils.rangeByName("CondicionesSistemaCalefaccion");
-  let pipeDiameterRange = InterfaceUtils.rangeByName("PipeSectionDiameter");
+  let conditionsRange = InterfaceUtils.rangeByName("HeatSystemConditions");
+  let pipeSectionRange = InterfaceUtils.rangeByName("PipeSection");
   let pipeFlowRange = InterfaceUtils.rangeByName("PipeSectionFlowState");
 
   let PPRpressure = StatusBoard.parseBoard(conditionsRange).sections
@@ -132,17 +143,38 @@ function updatePipeFlowState() {
     throw 'PPR Nominal Pressure must be PN16 or PN20';
   }
   
-  let pipeDiameterValues = pipeDiameterRange.getValues();
+  let pipeSectionValues = pipeSectionRange.getValues();
   let pipeFlowValues = pipeFlowRange.getValues();
 
-  for (let i = 2; i < pipeDiameterValues.length; i++) {
-    if (InterfaceUtils.isEmptyLine(pipeDiameterValues[i])) {
+  let radiatorData = InterfaceUtils.rangeByName("Radiators").getValues();
+
+  for (let i = 2; i < pipeSectionValues.length; i++) {
+    if (InterfaceUtils.isEmptyLine(pipeSectionValues[i])) {
       continue;
     }
 
     let flow = pipeFlowValues[i][0];
-    let diameter = pipeDiameterValues[i][2];
+    let diameter = pipeSectionValues[i][2];
+    let thisPipe = PPR.Pipe(PPRpressure, diameter);
 
-    // Not finished
+    let velocity = (flow / 3600) / thisPipe.area;
+    let pressureLoss = pprPressureLoss(PPRpressure, diameter, flow);
+
+    pipeFlowValues[i][1] = velocity;
+    pipeFlowValues[i][3] = pressureLoss;
+
+    let pipeLength = pipeSectionValues[i][3];
+    let volume = thisPipe.area * pipeLength * 1000;   // m3 -> lts
+
+    if (pipeSectionValues[i][1].indexOf("RAD") > 1) {
+      let radiatorCode = pipeSectionValues[i][1];
+      let radiatorSelected = radiatorData.filter(row => row[0] == radiatorCode)[0];
+
+      volume += radiatorSelected[5];
+    }
+
+    pipeFlowValues[i][2] = volume;
   }
+
+  pipeFlowRange.setValues(pipeFlowValues);
 }
