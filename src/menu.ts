@@ -145,6 +145,7 @@ function updatePipeFlowState() {
   
   let pipeSectionValues = pipeSectionRange.getValues();
   let pipeFlowValues = pipeFlowRange.getValues();
+  let pipeFlowFormulas = pipeFlowRange.getFormulas();
 
   let radiatorData = InterfaceUtils.rangeByName("Radiators").getValues();
 
@@ -172,7 +173,8 @@ function updatePipeFlowState() {
 
       volume += radiatorSelected[5];
     }
-
+    
+    pipeFlowValues[i][0] = pipeFlowFormulas[i][0];
     pipeFlowValues[i][2] = volume;
   }
 
