@@ -67,31 +67,54 @@ namespace HeatTransfer {
     materials: Material.material[], 
     thicknesses: number[]
   ): number | void {
-      if (materials.length != thicknesses.length) {
-        throw 'Materials and thicknesses arrays have different sizes!';
-      }
-
-      let conductivities = materials.map(material => {
-        if (typeof material.thermalConductivity == 'number') {
-          return material.thermalConductivity;
-        } else {
-          return material.thermalConductivity.evaluate(80); // wool density
-        }
-      });
-
-      let resistences = materials.map((material, i) => {
-        if (typeof material.thermalConductivity == 'number') {
-          return planarResistence(
-            thicknesses[i], 
-            material.thermalConductivity);
-        } else {
-          return planarResistence(
-            thicknesses[i], 
-            material.thermalConductivity.evaluate(60));
-        }
-        
-      });
-
-      return resistences.reduce((sum, now) => sum + now, 0);
+    if (materials.length != thicknesses.length) {
+      throw 'Materials and thicknesses arrays have different sizes!';
     }
+
+    let conductivities = materials.map(material => {
+      if (typeof material.thermalConductivity == 'number') {
+        return material.thermalConductivity;
+      } else {
+        return material.thermalConductivity.evaluate(80); // wool density
+      }
+    });
+
+    let resistences = materials.map((material, i) => {
+      if (typeof material.thermalConductivity == 'number') {
+        return planarResistence(
+          thicknesses[i], 
+          material.thermalConductivity);
+      } else {
+        return planarResistence(
+          thicknesses[i], 
+          material.thermalConductivity.evaluate(60));
+      }
+    });
+
+    return resistences.reduce((sum, now) => sum + now, 0);
+  }
+
+  /**
+   * Freeze Temperature by volume % glycol in water
+   */
+  export const freezeTemperatureData = [
+    [0, 0],
+    [-3, 10],
+    [-8, 20],
+    [-14, 30],
+    [-22, 40],
+    [-34, 50],
+    [-48, 60]
+  ];
+}
+
+/**
+ * Water - PolypropyleneGlycol mixture freeze point by volume %
+ */
+function glycolWaterVolume(targetTemperature: number) {
+  let volumeByTemperature = new MathUtils.Polynomial(
+    MathUtils.LagrangeInterpolation(HeatTransfer.freezeTemperatureData)
+  );
+
+  return volumeByTemperature.evaluate(targetTemperature);
 }
