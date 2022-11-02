@@ -167,7 +167,7 @@ function updatePipeFlowState() {
     let pipeLength = pipeSectionValues[i][3];
     let volume = thisPipe.area * pipeLength * 1000;   // m3 -> lts
 
-    if (pipeSectionValues[i][1].indexOf("RAD") > 1) {
+    if (pipeSectionValues[i][1].indexOf("RAD") > -1) {
       let radiatorCode = pipeSectionValues[i][1];
       let radiatorSelected = radiatorData.filter(row => row[0] == radiatorCode)[0];
 
