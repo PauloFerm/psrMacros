@@ -14,7 +14,7 @@ namespace MathUtils {
   
     evaluate(x: number): number {
       return this.coefficients
-        .map(c => c * x)
+        .map((c, i) => c * x ** i)
         .reduce((sum, now) => sum + now, 0);
     }
   }
@@ -59,5 +59,68 @@ namespace MathUtils {
     }
 
     return response;
+  }
+
+  function zeros(n: number) {
+    let array = new Array(n);
+    for (let i = n; i--;) {
+      array[i] = 0;
+    }
+    return array
+  }
+
+  function denominator(i: number, points: number[][]) {
+    let result = 1;
+    let x_i = points[i][0];
+    for (let j=points.length; j--;) {
+      if (i != j) {
+        result *= x_i - points[j][0]
+      }
+    }
+
+    return result
+  }
+
+  function polynomialInterpolation(i: number, points: number[][]) {
+    let coefficients = zeros(points.length);
+    coefficients[0] = 1 / denominator(i, points);
+
+    let newCoefficients;
+
+    for (let k = 0; k < points.length; k++) {
+      if (k == i) {
+        continue;
+      }
+
+      newCoefficients = zeros(points.length);
+
+      for (let j = (k < i) ? k+1 : k; j--;) {
+        newCoefficients[j+1] += coefficients[j];
+        newCoefficients[j] -= points[k][0] * coefficients[j];
+      }
+
+      coefficients = newCoefficients;
+    }
+
+    return coefficients
+  }
+
+  /**
+   * Coefficients by Lagrange Interpolation
+   * @param points Points array to generate polynomial coefficients
+   */
+  export function LagrangeInterpolation(points: number[][]) {
+    let polynomial = zeros(points.length);
+    let coefficients;
+
+    for (let i = 0; i < points.length; ++i) {
+      coefficients = polynomialInterpolation(i, points);
+
+      for (let k = 0; k < points.length; ++k) {
+        polynomial[k] += points[i][1] * coefficients[k];
+      }
+    }
+
+    return polynomial; //.map( L => Math.round(L * 1000) / 1000);
   }
 }
