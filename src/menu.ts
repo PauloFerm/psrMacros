@@ -1,26 +1,14 @@
 function onOpen() {
   let ui = SpreadsheetApp.getUi()
   ui.createMenu('PSR')
-    .addSubMenu(ui.createMenu('Radiadores')
-      .addItem('Validar', 'validateRadiator')
-      .addItem('Actualizar Datos', 'updateRadiator'))
-    .addSubMenu(ui.createMenu('Piping')
+    .addSubMenu(ui.createMenu('Demanda Térmica')
+      .addItem('Validar Radiadores', 'validateRadiator')
+      .addItem('Actualizar Radiadores', 'updateRadiator'))
+    .addSubMenu(ui.createMenu('Sistema Calefacción')
       .addItem('Actualizar Pérdida de Calor', 'updatePipeHeatLoss')
       .addItem('Actualizar Régimen de Flujo', 'updatePipeFlowState'))
     .addToUi();
 
-}
-
-/**
- * Test board parser 
- */
-function testParseBoard() {
-  let sheet = SpreadsheetApp.getActiveSheet();
-  let range = SpreadsheetApp.getActiveRange();
-
-  let board = StatusBoard.parseBoard(range)
-
-  SpreadsheetApp.getUi().alert(JSON.stringify(board));
 }
 
 /**
