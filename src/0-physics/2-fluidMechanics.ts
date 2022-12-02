@@ -13,7 +13,14 @@ namespace FluidMechanics {
     name: 'Water',
     thermalConductivity: 0.58,
     density: 1000, 
-    viscosity: 4e-7 
+    viscosity: 4.116e-4 // 70 C
+  }
+
+  export const air: fluid = {
+    name: "Air",
+    thermalConductivity: 0.024,
+    density: 1.2922,  // 0 C
+    viscosity: 1.349e-5  // 0 C
   }
 
   /**

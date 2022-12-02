@@ -28,3 +28,24 @@ namespace InterfaceUtils {
     return array.filter(x => x == "" || x == null).length == array.length;
   }
 }
+
+namespace LogUtils {
+  function variableName(variable: any): string {
+    return Object.keys({ variable })[0];
+  }
+
+  function checkNullVariable(value: any): boolean {
+
+    let checkNaN = Number.isNaN(value);
+    let checkNull = value == null;
+    let checkUndefined = value == undefined;
+    
+    return (checkNaN || checkNull || checkUndefined);
+  }
+
+  export function checkVariables(variables: [string, any][]) {
+    if (variables.map(array => checkNullVariable(array[1])).indexOf(true) > -1) {
+      Logger.log(variables);
+    }
+  }
+}

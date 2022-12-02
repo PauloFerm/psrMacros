@@ -149,6 +149,18 @@ function updatePipeFlowState() {
     let velocity = (flow / 3600) / thisPipe.area;
     let pressureLoss = pprPressureLoss(PPRpressure, diameter, flow);
 
+    // if (pressureLoss == NaN) {
+    //   Logger.log([flow, diameter, thisPipe, velocity, pressureLoss]);
+    // }
+
+    LogUtils.checkVariables([
+      [ "Flow", flow ],
+      [ "Diameter", diameter ],
+      [ "Pipe", thisPipe ],
+      [ "Velocity", velocity ],
+      [ "PressureLoss", pressureLoss ]
+    ]);
+
     pipeFlowValues[i][1] = velocity;
     pipeFlowValues[i][3] = pressureLoss;
 
