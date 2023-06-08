@@ -39,6 +39,17 @@ namespace Piping {
     let friction = FluidMechanics.colebrookWhite(pipe.roughness, diameter, reynolds);
     let loss = FluidMechanics.darcyWeisbach(friction, fluid.density, velocity, diameter);
 
+    LogUtils.checkVariables([
+      [ "Velocity", velocity ],
+      [ "Diameter", diameter ],
+      [ "Reynolds", reynolds ],
+      [ "Friction", friction ],
+    ]);
+
+    if (isNaN(loss)) {
+      loss = 0;
+    }
+
     return loss * (1.02e-4);
   }
 }
