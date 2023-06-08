@@ -100,7 +100,7 @@ function updatePipeHeatLoss() {
 
   for (let i = 2; i < pipeValues.length; i++) {
     if (InterfaceUtils.isEmptyLine(pipeValues[i]) ||
-        pipeValues[i][0].length != pipeValues[i][1].length ||
+        // pipeValues[i][0].length != pipeValues[i][1].length ||
         insulatedValues[i][0] == "") {
       continue;
     }
@@ -110,6 +110,13 @@ function updatePipeHeatLoss() {
 
     insulatedValues[i][1] = pprHeatLoss(PPRpressure, diameter, deltaTempHigh, insulationThickness);
     insulatedValues[i][2] = pprHeatLoss(PPRpressure, diameter, deltaTempLow, insulationThickness);
+
+    LogUtils.checkVariables([
+      [ "Diameter", diameter ],
+      [ "Insulation", insulationThickness ],
+      [ "HeatHigh", insulatedValues[i][1] ],
+      [ "HeatLow", insulatedValues[i][2] ]
+    ]);
   }
 
   pipeInsulationRange.setValues(insulatedValues);
