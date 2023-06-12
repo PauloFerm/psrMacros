@@ -1,8 +1,13 @@
 {
   "scripts": {
-    "update": "clasp push && cd gs && clasp pull && cd .."
+    "update": "clasp push && cd gs && clasp pull && cd ..",
+    "deploy": "node deploy/menu.js"
   },
   "dependencies": {
-    "@types/google-apps-script": "^1.0.55"
+    "@inquirer/prompts": "^2.1.1",
+    "@types/google-apps-script": "^1.0.64"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3"
   }
 }
