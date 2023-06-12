@@ -1,8 +1,8 @@
 const fs = require("fs");
-const { exec } = require("child_process");
+//const { exec } = require("child_process");
+const { exec } = require('child_process');
 
-
-currentProject = () => {
+logCurrentProject = () => {
     const projects = require('./projectsIds.json');
     const clasp = require('../.clasp.json');
 
@@ -23,47 +23,35 @@ changeClaspProject = (id) => {
     let newDataPull = dataPull.replace(/"scriptId":"[a-zA-Z0-9_-]*"/, `"scriptId":"${id}"`)
     
     fs.writeFileSync(pathPull, newDataPull, 'utf-8');
-
-    currentProject();
 }
 
-updateCurrentProject = () => {
-    exec("clasp push && cd gs && clasp pull && cd ..", (error, stdout, stderr) => {
+runCommand = async (cmd) => {
+    exec(cmd, (error, stdout, stderr) => {
         if (error) {
-            console.log(`Error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
+            console.error(`Error: ${error.message}`);
             return;
         }
         console.log(`stdout: ${stdout}`);
+        console.error(`stderr: ${stderr}`);
     });
 }
 
-deployToAllProjects = () => {
+updateCurrentProject = () => {
+    let command = "clasp push && cd gs && clasp pull && cd ..";
+    runCommand(command);
+}
+
+deployToAllProjects = async () => {
     const projects = require('./projectsIds.json');
 
     console.log("Proyectos:")
-    for (project of projects) {
-        changeClaspProject(project.id);
-
-        console.log("Pulling to", project.name)
-        exec("clasp push", (error, stdout, stderr) => {
-            if (error) {
-                console.log(`Error: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-        });
+    for (let project of projects) {
+        await changeClaspProject(project.id);
+        runCommand("clasp push");
     }
 }
 
-module.exports.currentProject = currentProject;
+module.exports.logCurrentProject = logCurrentProject;
 module.exports.changeClaspProject = changeClaspProject;
 module.exports.updateCurrentProject = updateCurrentProject;
 module.exports.deployToAllProjects = deployToAllProjects;

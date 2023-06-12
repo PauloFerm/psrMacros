@@ -51,11 +51,12 @@ launchMenu = async () => {
             deploy.deployToAllProjects();
             break;
         case "current":
-            deploy.currentProject();
+            deploy.logCurrentProject();
             break;
         case "change":
             let selectedProject = await selectProject();
             deploy.changeClaspProject(selectedProject.id);
+            deploy.logCurrentProject();
             break;
         default:
             console.log("No action for", option);
