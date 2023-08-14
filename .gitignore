@@ -1,6 +1,13 @@
-.clasp.json
-.vscode
+# Javascript misc
+package-lock.json
 node_modules/
+
+# Clasp config files
+.clasp.json
+src/appsscript.json
+
+# Cloud compiled version
 gs/
 
-*/credentials.json
+# Names and Ids to manage with clammp
+clammp/projectsIds.json
