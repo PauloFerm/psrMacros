@@ -46,7 +46,7 @@ namespace InsulationEE {
 
     let thisPrice = price[diameterIndex][thicknessIndex];
 
-    if (thisPrice == NaN ) {
+    if (Number.isNaN(thisPrice)) {
       throw `Insulation d: ${pipeExternalDiameter}, e: ${thickness} doesn't exists`;
     }
 
