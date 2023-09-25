@@ -7,8 +7,15 @@ function onOpen() {
     .addSubMenu(ui.createMenu('Sistema Calefacción')
       .addItem('Actualizar Pérdida de Calor', 'updatePipeHeatLoss')
       .addItem('Actualizar Régimen de Flujo', 'updatePipeFlowState'))
+    .addSubMenu(ui.createMenu('Utilidades')
+      .addItem('Tabla Markdown', 'table2md'))
     .addToUi();
 
+}
+
+function table2md() {
+  const aligments = mdTables.tableAsMarkdown();
+  SpreadsheetApp.getUi().alert(aligments);
 }
 
 /**
