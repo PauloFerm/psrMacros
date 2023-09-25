@@ -4,7 +4,9 @@
         "strict": true,
         "experimentalDecorators": true,
         "allowJs": true,
-        "target": "ES2019"
+        "target": "ES2019",
+        "noImplicitAny": true,
+        "noImplicitReturns": true
     },
         "include": [
         "./src/**/*"
