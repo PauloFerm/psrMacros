@@ -43,8 +43,8 @@ namespace mdTables {
     return mdAligment
   };
 
-  const rowMD = (cells: string[]): string => {
-    return `| ${cells.join(' | ')} |`
+  const rowMD = (rowValues: string[]): string => {
+    return `| ${rowValues.join(' | ')} |`
   };
 
   export const tableAsMarkdown = (): string => {
