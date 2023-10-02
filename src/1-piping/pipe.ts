@@ -36,10 +36,11 @@ namespace Piping {
       fluid.viscosity : fluid.viscosity.evaluate(60);
 
     let reynolds = FluidMechanics.reynolds(velocity, diameter, viscosity);
-    let friction = FluidMechanics.colebrookWhite_Buzzelli(pipe.roughness, diameter, reynolds);
+    let friction = FluidMechanics.colebrookWhite.Niazkar(pipe.roughness, diameter, reynolds);
     let loss = FluidMechanics.darcyWeisbach(friction, fluid.density, velocity, diameter);
 
     LogUtils.checkVariables([
+      ["Function", "pressureLoss"],
       [ "Velocity", velocity ],
       [ "Diameter", diameter ],
       [ "Viscosity", viscosity],

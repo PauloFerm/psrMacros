@@ -33,56 +33,76 @@ namespace FluidMechanics {
     return velocity * diameter / viscosity;
   }
 
-  /** 
-   * Returns friction factor by Colebrook-White equation using 
-   * Niazkar aproximation method.
-   * @param {number} e - Pipe roughness
-   * @param {number} d - Pipe inner diameter
-   * @param {number} Re - Reynolds number
+  /**
+   * Friction factor by Colebrook-White equation
    */
-  export function colebrookWhite_Niazkar(e: number, d: number, Re: number): number {
-    let A = -2 * Math.log((e / d) / 3.7 + 4.5547 / Re ** 0.8784);
-    let B = -2 * Math.log((e / d) / 3.7 + 2.51 * A / Re);
-    let C = -2 * Math.log((e / d) / 3.7 + 2.51 * B / Re);
+  export const colebrookWhite = {
+    /** 
+     * Returns friction factor by Colebrook-White equation using 
+     * Niazkar aproximation method.
+     * @param {number} e - Pipe roughness
+     * @param {number} d - Pipe inner diameter
+     * @param {number} Re - Reynolds number
+     */
+    Niazkar: (e: number, d: number, Re: number): number => {
+      let A = -2 * Math.log((e / d) / 3.7 + 4.5547 / Re ** 0.8784);
+      let B = -2 * Math.log((e / d) / 3.7 + 2.51 * A / Re);
+      let C = -2 * Math.log((e / d) / 3.7 + 2.51 * B / Re);
 
-    let invSqrtFriction = A - (B - A) ** 2 / (C - 2 * B + A);
-    let result = (1 / invSqrtFriction) ** 2;
+      let invSqrtFriction = A - (B - A) ** 2 / (C - 2 * B + A);
+      let result = (1 / invSqrtFriction) ** 2;
 
-    LogUtils.checkVariables([
-      [ "A", A ],
-      [ "B", B ],
-      [ "C", C ],
-      [ "invSqrtFriction", invSqrtFriction ],
-      [ "result", result ]
-    ]);
+      LogUtils.checkVariables([
+        ["Function", "colebrookWhite_Niazkar"],
+        [ "A", A ],
+        [ "B", B ],
+        [ "C", C ],
+        [ "invSqrtFriction", invSqrtFriction ],
+        [ "result", result ]
+      ]);
 
-    return result;
-  }
+      return result;
+    },
+    /** 
+     * Returns friction factor by Colebrook-White equation using 
+     * Cheng aproximation method.
+     * @param {number} e - Pipe roughness
+     * @param {number} d - Pipe inner diameter
+     * @param {number} Re - Reynolds number
+     */
+    Cheng: (e: number, d: number, Re: number): number => {
+      let a = 1 / (1 + (Re / 2720) ** 9);
+      let b = 1 / (1 + (Re / (160 * d / e)) ** 1.8);
 
-  export function colebrookWhite_Cheng(e: number, d: number, Re: number): number {
-    let a = 1 / (1 + (Re / 2720) ** 9);
-    let b = 1 / (1 + (Re / (160 * d / e)) ** 1.8);
+      let first = (64 / Re) ** a;
+      let second = (0.8 * Math.log(Re / 6.8)) ** (2 * (1 - a) * b);
+      let third = (2 * Math.log(3.7 * d / e)) ** (2 *(1 - a) * (1 - b));
 
-    let first = (64 / Re) ** a;
-    let second = (0.8 * Math.log(Re / 6.8)) ** (2 * (1 - a) * b);
-    let third = (2 * Math.log(3.7 * d / e)) ** (2 *(1 - a) * (1 - b));
+      return first * second * third;
+    },
+    /** 
+     * Returns friction factor by Colebrook-White equation using 
+     * Buzzelli aproximation method.
+     * @param {number} e - Pipe roughness
+     * @param {number} d - Pipe inner diameter
+     * @param {number} Re - Reynolds number
+     */
+    Buzzelli: (e: number, d: number, Re: number): number => {
+      let A = (0.774 * Math.log(Re) - 1.41) / (1 + 1.32 * Math.sqrt(e / d));
+      let B = (e / (3.7 * d)) * Re + 2.51 * A;
 
-    return first * second * third;
-  }
+      let friction = (A - (A + 2 * Math.log10(B / Re)) / (1 + 2.18 / B)) ** -2;
 
-  export function colebrookWhite_Buzzelli(e: number, d: number, Re: number): number {
-    let A = (0.774 * Math.log(Re) - 1.41) / (1 + 1.32 * Math.sqrt(e / d));
-    let B = (e / (3.7 * d)) * Re + 2.51 * A;
+      LogUtils.checkVariables([
+        ["Function", "colebrookWhite_Buzzelli"],
+        [ "A", A ],
+        [ "B", B ],
+        [ "friction", friction ]
+      ]);
 
-    let friction = (A - (A + 2 * Math.log(B / Re)) / (1 + 2.18 / B)) ** -2;
-
-    LogUtils.checkVariables([
-      [ "A", A ],
-      [ "B", B ],
-      [ "friction", friction ]
-    ]);
-
-    return friction;
+      return friction;
+    }
+    
   }
   
   /**
