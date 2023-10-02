@@ -50,8 +50,8 @@ namespace HeatSystem {
       let diameter = pipeValues[i][2];
       let insulationThickness = insulatedValues[i][0];
 
-      insulatedValues[i][1] = pprHeatLoss(PPRpressure, diameter, deltaTempHigh, insulationThickness);
-      insulatedValues[i][2] = pprHeatLoss(PPRpressure, diameter, deltaTempLow, insulationThickness);
+      insulatedValues[i][1] = PPR.heatLoss(PPRpressure, diameter, deltaTempHigh, insulationThickness);
+      insulatedValues[i][2] = PPR.heatLoss(PPRpressure, diameter, deltaTempLow, insulationThickness);
 
       LogUtils.checkVariables([
         [ "Diameter", diameter ],
@@ -96,7 +96,7 @@ namespace HeatSystem {
       let thisPipe = PPR.Pipe(PPRpressure, diameter);
 
       let velocity = (flow / 3600) / thisPipe.area;
-      let pressureLoss = pprPressureLoss(PPRpressure, diameter, flow);
+      let pressureLoss = PPR.pressureLoss(PPRpressure, diameter, flow);
 
       // if (pressureLoss == NaN) {
       //   Logger.log([flow, diameter, thisPipe, velocity, pressureLoss]);

@@ -24,9 +24,9 @@ namespace PPR {
    * @param diameter - Nominal diameter
    * @returns Pipe Object
    */
-  export function Pipe(
+  export const Pipe = (
     pressure: "PN20" | "PN16", 
-    diameter: PPR.pprDiameter): Piping.pipe {
+    diameter: PPR.pprDiameter): Piping.pipe => {
 
     let pressureIndex = pressuresNominal.indexOf(pressure);
     let diameterIndex = diametersNominal.indexOf(diameter);
@@ -49,62 +49,61 @@ namespace PPR {
 
     return thisPipe
   }
-}
 
-/**
- * Returns pressure loss in a PPR pipe by length unit
- * @param {string} pressure - Pipe nominal pressure
- * @param {number} diameter - Pipe nominal diameter
- * @param {number} flowrate - Flowrate in m^3/h
- */
-function pprPressureLoss(
-  pressure: "PN20"|"PN16",
-  diameter: PPR.pprDiameter,
-  flowrate: number): number {
+  /**
+   * Returns pressure loss in a PPR pipe by length unit
+   * @param {string} pressure - Pipe nominal pressure
+   * @param {number} diameter - Pipe nominal diameter
+   * @param {number} flowrate - Flowrate in m^3/h
+   */
+  export const pressureLoss = (
+    pressure: "PN20"|"PN16",
+    diameter: PPR.pprDiameter,
+    flowrate: number): number => {
 
-  let thisPipe: Piping.pipe = PPR.Pipe(pressure, diameter);
-  
-  return Piping.pressureLoss(FluidMechanics.water, thisPipe, flowrate);
-}
-
-
-/**
- * Heat Loss in a PPR pipe
- * @param pressure - Nominal pressure: PN16 | PN20
- * @param diameter - Nominal diameter in mm
- * @param temperatureDelta - Temperature difference between fluid and exterior
- * @param insulationThickness - Insulation thickness in mm
- * @returns Heat loss rate in W/m 
- */
-function pprHeatLoss(
-  pressure: "PN20"|"PN16",
-  diameter: PPR.pprDiameter,
-  temperatureDelta: number,
-  insulationThickness?: 9|13|19|25): number {
-
-  let thisPipe: Piping.pipe = PPR.Pipe(pressure, diameter);
-  let resistence = NaN;
-
-  if (insulationThickness == null) {
-
-    resistence = HeatTransfer.cylindricResistence(
-      thisPipe.diameter.external / 1000,
-      thisPipe.diameter.internal / 1000,
-      thisPipe.conductivity);
-
-  } else if (insulationThickness != null) {
-
-    let thisInsulation: Piping.tube = InsulationEE.thisTube(
-      thisPipe.diameter.external,
-      insulationThickness);
-
-    resistence = HeatTransfer.pipeInsulatedResistence(thisPipe, thisInsulation);
+    let thisPipe: Piping.pipe = PPR.Pipe(pressure, diameter);
     
-
-  } else {
-    throw "Something is wrong with the pprHeatLoss"
+    return Piping.pressureLoss(FluidMechanics.water, thisPipe, flowrate);
   }
 
-  return temperatureDelta / resistence;
 
+  /**
+   * Heat Loss in a PPR pipe
+   * @param pressure - Nominal pressure: PN16 | PN20
+   * @param diameter - Nominal diameter in mm
+   * @param temperatureDelta - Temperature difference between fluid and exterior
+   * @param insulationThickness - Insulation thickness in mm
+   * @returns Heat loss rate in W/m 
+   */
+  export const heatLoss = (
+    pressure: "PN20"|"PN16",
+    diameter: PPR.pprDiameter,
+    temperatureDelta: number,
+    insulationThickness?: 9|13|19|25): number => {
+
+    let thisPipe: Piping.pipe = PPR.Pipe(pressure, diameter);
+    let resistence = NaN;
+
+    if (insulationThickness == null) {
+
+      resistence = HeatTransfer.cylindricResistence(
+        thisPipe.diameter.external / 1000,
+        thisPipe.diameter.internal / 1000,
+        thisPipe.conductivity);
+
+    } else if (insulationThickness != null) {
+
+      let thisInsulation: Piping.tube = InsulationEE.thisTube(
+        thisPipe.diameter.external,
+        insulationThickness);
+
+      resistence = HeatTransfer.pipeInsulatedResistence(thisPipe, thisInsulation);
+      
+
+    } else {
+      throw "Something is wrong with the pprHeatLoss"
+    }
+
+    return temperatureDelta / resistence;
+  }
 }
