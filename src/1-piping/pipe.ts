@@ -25,10 +25,10 @@ namespace Piping {
    * @param {Object} pipe - Pipe selected
    * @param {number} flowrate - Flowrate in m^3/h
    */
-  export function pressureLoss(
+  export const pressureLoss = (
     fluid: FluidMechanics.fluid,
     pipe: Piping.pipe,
-    flowrate: number): number {
+    flowrate: number): number => {
 
     let velocity = flowrate * (1 / 3600) / pipe.area; // m^3/h -> m^3/s
     let diameter = pipe.diameter.internal / 1000;     // mm -> m

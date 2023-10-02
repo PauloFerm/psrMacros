@@ -29,7 +29,10 @@ namespace FluidMechanics {
    * @param {number} diameter - Pipe inner Diameter
    * @param {number} viscosity - Fluid kinematic viscosity
    */
-  export function reynolds(velocity: number, diameter: number, viscosity: number): number {
+  export const reynolds = (
+    velocity: number, 
+    diameter: number, 
+    viscosity: number): number => {
     return velocity * diameter / viscosity;
   }
 
@@ -112,7 +115,11 @@ namespace FluidMechanics {
    * @param {number} velocity - Flow velocity
    * @param {number} diameter - Pipe inner diameter
    */
-  export function darcyWeisbach(friction: number, density: number, velocity: number, diameter: number): number {
+  export const darcyWeisbach = (
+    friction: number, 
+    density: number, 
+    velocity: number, 
+    diameter: number): number => {
     return friction * density * velocity ** 2 / (2 * diameter);
   }
 }
