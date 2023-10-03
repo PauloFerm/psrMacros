@@ -2,13 +2,6 @@ namespace mdTables {
   type mdFlush = ' :--- ' | ' :---: ' | ' ---: ';
   type hAlign = 'general' | 'general-left' | 'general-right' | 'right' | 'left' | 'center';
 
-  const numberOfDecimals = (num: number): number => {
-    let asString: string = num.toString();
-    let dotPlace: number =  asString.indexOf('.');
-
-    return (dotPlace < 0) ? 0 : asString.length - (dotPlace + 1);
-  };
-
   const mapAligment = (ali: string, index: number, values: string[]): mdFlush => {
     let mdAligment: mdFlush = ' :--- ';
     
@@ -47,6 +40,26 @@ namespace mdTables {
     return `| ${rowValues.join(' | ')} |`
   };
 
+  const numberOfDecimals = (numberFormated: string): number => {
+    let dotPlace: number =  numberFormated.indexOf('.');
+
+    return (dotPlace < 0) ? 0 : numberFormated.length - (dotPlace + 1);
+  };
+
+  const setDecimals = (value: string, decimals: number): string => {
+    let asNumber = parseFloat(value);
+
+    if (isNaN(asNumber)) {
+      return value
+    }
+
+    let numberFormated = asNumber.toFixed(decimals)
+
+    Logger.log([value, decimals, numberFormated]);
+
+    return numberFormated
+  }
+
   export const tableAsMarkdown = (): string => {
     const activeRange = SpreadsheetApp.getActiveRange();
     const activeValues = activeRange.getValues();
@@ -55,27 +68,23 @@ namespace mdTables {
     const bodyRowsValues = activeValues.slice(1);
     
     const firstRowAligment = activeRange.getHorizontalAlignments()[1];
+    const firstRowDecimals = activeRange.getNumberFormats()[1];
+
+    const decimals = firstRowDecimals.map(format => numberOfDecimals(format));
+
 
     let mdAligment: mdFlush[] = firstRowAligment.map(
       (ali, i) => mapAligment(ali, i, bodyRowsValues[0])
     );
 
-    const reduceDecimals = (value: string): string => {
-      let asNumber = parseFloat(value);
-
-      if (isNaN(asNumber) || numberOfDecimals(asNumber) < 2) {
-        return value
-      }
-
-      return asNumber.toFixed(2)
-    }
-
     let table: string[] = [
       rowMD(headerRowsValues),
       rowMD(mdAligment),
-      ...bodyRowsValues.map(row => rowMD(
-        row.map(value => reduceDecimals(value))
-      ))
+      ...bodyRowsValues.map(
+        row => rowMD(row.map(
+          (value, i) => setDecimals(value, decimals[i])
+        ))
+      )
     ];
 
     return table.join('\n')
