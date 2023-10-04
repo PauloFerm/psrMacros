@@ -40,25 +40,62 @@ export namespace mdTables {
     return `| ${rowValues.join(' | ')} |`
   };
 
+  interface CellFormat {
+    monospaced: boolean;
+    decimals?: number;
+    percentage?: boolean;
+  }
+
+  const isMonospaced = (family: string): boolean => {
+    return family.indexOf("Mono") > 0 || family.indexOf("Courier") > 0
+  };
+
+  const isPercentage = (format: string): boolean => {
+    return format.indexOf("%") > 0
+  };
+
   const numberOfDecimals = (numberFormated: string): number => {
     let dotPlace: number =  numberFormated.indexOf('.');
 
     return (dotPlace < 0) ? 0 : numberFormated.length - (dotPlace + 1);
   };
 
-  const setDecimals = (value: string, decimals: number): string => {
-    let asNumber = parseFloat(value);
-
-    if (isNaN(asNumber)) {
-      return value
+  const getFormats = (formats: string[], families: string[]): CellFormat[] => {
+    if (formats.length != families.length) {
+      throw "Formats and Families must be the same length"
     }
 
-    let numberFormated = asNumber.toFixed(decimals)
+    let cellFormats: CellFormat[] = formats.map((format, i) => {
+      return {
+        monospaced: isMonospaced(families[i]),
+        decimals: numberOfDecimals(format),
+        percentage: isPercentage(format)
+      }
+    });
 
-    Logger.log([value, decimals, numberFormated]);
+    return cellFormats
+  };
 
-    return numberFormated
-  }
+  /** Format number decimals and percentage symbol */
+  const formatNumber = (value: string, format: CellFormat): string => {
+    let asNumber = parseFloat(value);
+
+    if (isNaN(asNumber)) { return value }
+
+    asNumber = format.percentage ? asNumber * 100 : asNumber;
+    let numberFormated = asNumber.toFixed(format.decimals);
+
+    return format.percentage ? numberFormated + " %" : numberFormated
+  };
+
+
+  const setFormat = (value: string, format: CellFormat): string => {
+    value = formatNumber(value, format);
+    value = format.monospaced ? `\`${value}\`` : value
+
+    return value
+  };
+
 
   export const tableAsMarkdown = (): string => {
     const activeRange = SpreadsheetApp.getActiveRange();
@@ -68,26 +105,26 @@ export namespace mdTables {
     const bodyRowsValues = activeValues.slice(1);
     
     const firstRowAligment = activeRange.getHorizontalAlignments()[1];
-    const firstRowDecimals = activeRange.getNumberFormats()[1];
 
-    const decimals = firstRowDecimals.map(format => numberOfDecimals(format));
-
+    const formats = getFormats(
+      activeRange.getNumberFormats()[1],
+      activeRange.getFontFamilies()[1]
+    )
 
     let mdAligment: mdFlush[] = firstRowAligment.map(
       (ali, i) => mapAligment(ali, i, bodyRowsValues[0])
     );
 
-    let table: string[] = [
-      rowMD(headerRowsValues),
-      rowMD(mdAligment),
-      ...bodyRowsValues.map(
-        row => rowMD(row.map(
-          (value, i) => setDecimals(value, decimals[i])
-        ))
-      )
-    ];
+    let headerRow: string = rowMD(headerRowsValues);
+    let alignRow: string = rowMD(mdAligment);
+    let bodyRows: string[] = bodyRowsValues.map(
+      row => rowMD(row.map(
+        (value, i) => setFormat(value, formats[i])
+      ))
+    );
 
-    return table.join('\n')
+    let table: string = [headerRow, alignRow, ...bodyRows].join('\n');
 
+    return table
   };
 }
