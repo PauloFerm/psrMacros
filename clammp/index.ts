@@ -56,6 +56,7 @@ const mainMenu = async () => {
       let selectedProject = await selectProjectMenu();
       functions.changeClaspProject(selectedProject.id);
       console.log(`Current project: ${selectedProject.name}`);
+      mainMenu();
       break;
     case "exit":
       process.exit(1);
@@ -63,7 +64,6 @@ const mainMenu = async () => {
       console.log("No action for", option);
   }
 
-  mainMenu();
 }
 
 export const launchMenu = mainMenu();
