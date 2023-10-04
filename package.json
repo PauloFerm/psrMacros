@@ -12,6 +12,7 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "menu": "npx ts-node clammp launchMenu"
+    "menu": "npx ts-node clammp launchMenu",
+    "test": "npx jest"
   }
 }
