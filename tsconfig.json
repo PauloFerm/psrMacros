@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
-        "types": ["google-apps-script"],
+        "types": ["google-apps-script", "jest"],
         "strict": true,
         "experimentalDecorators": true,
         "allowJs": true,
         "target": "ES2019",
         "noImplicitAny": true,
-        "noImplicitReturns": true
+        "noImplicitReturns": true,
+        "esModuleInterop": true,
     },
         "include": [
         "./src/**/*"
