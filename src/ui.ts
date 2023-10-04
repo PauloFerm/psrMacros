@@ -1,3 +1,7 @@
+import { ThermalDemand } from "./9-macros/0-thermalDemand";
+import { HeatSystem } from "./9-macros/1-heatSystem";
+import { mdTables } from "./8-interface/2-mdtables";
+
 const onOpen = (): void => {
   let ui = SpreadsheetApp.getUi()
   ui.createMenu('PSR')

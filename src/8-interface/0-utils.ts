@@ -1,4 +1,4 @@
-namespace InterfaceUtils {
+export namespace InterfaceUtils {
   export function columnNumberToLetter(column: number): string {
     let temp, letter = '';
     while (column > 0) {
@@ -29,7 +29,7 @@ namespace InterfaceUtils {
   }
 }
 
-namespace LogUtils {
+export namespace LogUtils {
   function variableName(variable: any): string {
     return Object.keys({ variable })[0];
   }

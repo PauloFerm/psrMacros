@@ -1,4 +1,4 @@
-namespace StatusBoard {
+export namespace StatusBoard {
   interface property {
     name: string;
     value: string | number;

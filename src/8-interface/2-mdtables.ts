@@ -1,4 +1,4 @@
-namespace mdTables {
+export namespace mdTables {
   type mdFlush = ' :--- ' | ' :---: ' | ' ---: ';
   type hAlign = 'general' | 'general-left' | 'general-right' | 'right' | 'left' | 'center';
 

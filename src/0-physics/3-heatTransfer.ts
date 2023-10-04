@@ -1,7 +1,10 @@
+import { MathUtils } from "./0-mathUtils";
+import { Material } from "./1-materials";
+
 /**
  * Heat transfer compendium
  */
-namespace HeatTransfer {
+export namespace HeatTransfer {
   
   /**
    * Cilindric thermal resistence
@@ -31,30 +34,6 @@ namespace HeatTransfer {
     conductivity: number
   ): number {
     return conductivity / (thickness / 1000);
-  }
-
-  /**
-   * Thermal resistence of an insutlated pipe
-   * @param pipe - Pipe Object
-   * @param insulation - Insulation Tube Object
-   * @returns Total thermal resistence
-   */
-  export function pipeInsulatedResistence(
-    pipe: Piping.pipe,
-    insulation: Piping.tube
-  ): number {
-
-    let pipeResistence = HeatTransfer.cylindricResistence(
-          pipe.diameter.external / 1000, 
-          pipe.diameter.internal / 1000, 
-          pipe.conductivity);
-
-    let insuResistence = HeatTransfer.cylindricResistence(
-          insulation.diameter.external / 1000, 
-          pipe.diameter.external / 1000, 
-          insulation.conductivity);
-
-    return pipeResistence + insuResistence;
   }
 
   /**

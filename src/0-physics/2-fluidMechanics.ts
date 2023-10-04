@@ -1,7 +1,12 @@
+import { MathUtils } from "./0-mathUtils";
+import { Material } from "./1-materials";
+import { LogUtils } from "../8-interface/0-utils";
+
+
 /**
  * Fluid Mechanics function compendium
  */
-namespace FluidMechanics {
+export namespace FluidMechanics {
   // This interface must be a class to get temperature dependent
   // viscosity, density, Cp and other properties.
   export interface fluid extends Material.material { 

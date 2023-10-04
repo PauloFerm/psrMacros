@@ -1,4 +1,8 @@
-namespace HeatSystem {
+import { InterfaceUtils, LogUtils } from "../8-interface/0-utils";
+import { StatusBoard } from "../8-interface/1-boards";
+import { PPR } from "../1-piping/2-ppr";
+
+export namespace HeatSystem {
 
   /**
    * Update heat loss on piping sections

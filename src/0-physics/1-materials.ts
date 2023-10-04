@@ -1,4 +1,9 @@
-namespace Material {
+import { MathUtils } from "./0-mathUtils";
+
+/**
+ * Material objects and interface
+ */
+export namespace Material {
 
   export interface material {
     name: string;
@@ -42,5 +47,4 @@ namespace Material {
   export const epe: material = { name: 'Expanded Poliethilene', thermalConductivity: 0.034};
   export const clt: material = { name: 'Cross Laminated Timber', thermalConductivity: 0.153 };
   
-
 }

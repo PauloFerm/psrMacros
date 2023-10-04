@@ -1,4 +1,10 @@
-namespace InsulationEE {
+import { MathUtils } from "../0-physics/0-mathUtils";
+import { Piping } from "./0-pipe";
+
+/**
+ * Pipe Insulation Module
+ */
+export namespace InsulationEE {
   const conductivity = 0.034;
   const thicknesses = [ 9, 13, 19, 25 ];
   const diameters = [ 6, 12, 15, 10, 18, 22, 28, 42, 20, 25, 35, 48, 54, 60, 67, 76, 89, 108, 114 ];

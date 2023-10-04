@@ -1,7 +1,11 @@
+import { FluidMechanics } from "../0-physics/2-fluidMechanics";
+import { HeatTransfer } from "../0-physics/3-heatTransfer";
+import { LogUtils } from "../8-interface/0-utils";
+
 /**
  * Piping resources compendium
  */
-namespace Piping {
+export namespace Piping {
   export interface tube {
     material: string;
     conductivity: number; // W/mK
@@ -55,4 +59,28 @@ namespace Piping {
 
     return loss * (1.02e-4);
   }
+
+    /**
+   * Thermal resistence of an insutlated pipe
+   * @param pipe - Pipe Object
+   * @param insulation - Insulation Tube Object
+   * @returns Total thermal resistence
+   */
+    export function insulatedResistence(
+      pipe: Piping.pipe,
+      insulation: Piping.tube
+    ): number {
+  
+      let pipeResistence = HeatTransfer.cylindricResistence(
+            pipe.diameter.external / 1000, 
+            pipe.diameter.internal / 1000, 
+            pipe.conductivity);
+  
+      let insuResistence = HeatTransfer.cylindricResistence(
+            insulation.diameter.external / 1000, 
+            pipe.diameter.external / 1000, 
+            insulation.conductivity);
+  
+      return pipeResistence + insuResistence;
+    }
 }

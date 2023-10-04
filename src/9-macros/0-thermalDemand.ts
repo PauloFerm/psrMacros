@@ -1,4 +1,8 @@
-namespace ThermalDemand {
+import { Radiator } from "../3-mechanical/0-radiators";
+import { InterfaceUtils } from "../8-interface/0-utils";
+
+
+export namespace ThermalDemand {
   /**
    * Insert radiator model validation
    */

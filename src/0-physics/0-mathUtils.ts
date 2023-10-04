@@ -1,7 +1,7 @@
 /**
  * Math Utils compendium
  */
-namespace MathUtils {
+export namespace MathUtils {
   /**
    * Polynomial coefficient and evaluator
    */
@@ -124,3 +124,5 @@ namespace MathUtils {
     return polynomial; //.map( L => Math.round(L * 1000) / 1000);
   }
 }
+
+// export const MathForTesting = MathUtils;

@@ -1,7 +1,12 @@
+import { FluidMechanics } from "../0-physics/2-fluidMechanics";
+import { HeatTransfer } from "../0-physics/3-heatTransfer";
+import { Piping } from "./0-pipe";
+import { InsulationEE } from "./1-insulation";
+
 /**
  * PPR Pipes data compendium
  */
-namespace PPR {
+export namespace PPR {
 
   const diametersNominal = <const>[ 20, 25, 32, 40, 50, 63, 75, 90, 110 ];
   const pressuresNominal = <const>[ "PN16", "PN20" ];
@@ -97,7 +102,7 @@ namespace PPR {
         thisPipe.diameter.external,
         insulationThickness);
 
-      resistence = HeatTransfer.pipeInsulatedResistence(thisPipe, thisInsulation);
+      resistence = Piping.insulatedResistence(thisPipe, thisInsulation);
       
 
     } else {
