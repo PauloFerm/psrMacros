@@ -37,6 +37,10 @@ const mainMenu = async () => {
       {
         name: "Change current project",
         value: "change"
+      },
+      {
+        name: "Exit Menu",
+        value: "exit"
       }
     ]
   });
@@ -53,9 +57,13 @@ const mainMenu = async () => {
       functions.changeClaspProject(selectedProject.id);
       console.log(`Current project: ${selectedProject.name}`);
       break;
+    case "exit":
+      process.exit(1);
     default:
       console.log("No action for", option);
   }
+
+  mainMenu();
 }
 
 export const launchMenu = mainMenu();
