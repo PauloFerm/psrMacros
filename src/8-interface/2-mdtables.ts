@@ -2,6 +2,9 @@ export namespace mdTables {
   type mdFlush = ' :--- ' | ' :---: ' | ' ---: ';
   type hAlign = 'general' | 'general-left' | 'general-right' | 'right' | 'left' | 'center';
 
+  /**
+   * Map aligment description to Markdown notation
+   */
   const mapAligment = (ali: string, index: number, values: string[]): mdFlush => {
     let mdAligment: mdFlush = ' :--- ';
     
@@ -36,6 +39,9 @@ export namespace mdTables {
     return mdAligment
   };
 
+  /**
+   * Join row array with `|` character
+   */
   const rowMD = (rowValues: string[]): string => {
     return `| ${rowValues.join(' | ')} |`
   };
@@ -44,10 +50,25 @@ export namespace mdTables {
     monospaced: boolean;
     decimals?: number;
     percentage?: boolean;
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
   }
 
   const isMonospaced = (family: string): boolean => {
     return family.indexOf("Mono") > 0 || family.indexOf("Courier") > 0
+  };
+
+  const isBold = (weight: string): boolean => {
+    return weight == 'bold'
+  };
+
+  const isItalic = (style: string): boolean => {
+    return style == 'italic'
+  };
+
+  const isUnderline = (line: string): boolean => {
+    return line == 'underline'
   };
 
   const isPercentage = (format: string): boolean => {
@@ -60,7 +81,16 @@ export namespace mdTables {
     return (dotPlace < 0) ? 0 : numberFormated.length - (dotPlace + 1);
   };
 
-  const getFormats = (formats: string[], families: string[]): CellFormat[] => {
+  /**
+   * Obtain spreadsheet format and map it to `CellFormat[]` 
+   */
+  const getFormats = (
+    formats: string[], 
+    families: string[],
+    weights: string[],
+    styles: string[],
+    lines: string[]): CellFormat[] => {
+    
     if (formats.length != families.length) {
       throw "Formats and Families must be the same length"
     }
@@ -69,15 +99,22 @@ export namespace mdTables {
       return {
         monospaced: isMonospaced(families[i]),
         decimals: numberOfDecimals(format),
-        percentage: isPercentage(format)
+        percentage: isPercentage(format),
+        bold: isBold(weights[i]),
+        italic: isItalic(styles[i]),
+        underline: isUnderline(lines[i])
       }
     });
 
     return cellFormats
   };
 
-  /** Format number decimals and percentage symbol */
+  /** 
+   * Format number decimals and percentage symbol 
+   */
   const formatNumber = (value: string, format: CellFormat): string => {
+    if (typeof value == 'string' && value.indexOf('.') != value.lastIndexOf('.')) { return value }
+
     let asNumber = parseFloat(value);
 
     if (isNaN(asNumber)) { return value }
@@ -88,15 +125,22 @@ export namespace mdTables {
     return format.percentage ? numberFormated + " %" : numberFormated
   };
 
-
+  /**
+   * Apply Markdown format arround the string
+   */
   const setFormat = (value: string, format: CellFormat): string => {
     value = formatNumber(value, format);
-    value = format.monospaced ? `\`${value}\`` : value
+    value = format.monospaced ? `\`${value}\`` : value;
+    value = format.bold ? `**${value}**` : value;
+    value = format.italic ? `*${value}*` : value;
+    value = format.underline ? `<u>${value}</u>` : value;
 
     return value
   };
 
-
+  /**
+   * ActiveRange to Markdown with the 1st row format
+   */
   export const tableAsMarkdown = (): string => {
     const activeRange = SpreadsheetApp.getActiveRange();
     const activeValues = activeRange.getValues();
@@ -108,7 +152,10 @@ export namespace mdTables {
 
     const formats = getFormats(
       activeRange.getNumberFormats()[1],
-      activeRange.getFontFamilies()[1]
+      activeRange.getFontFamilies()[1],
+      activeRange.getFontWeights()[1],
+      activeRange.getFontStyles()[1],
+      activeRange.getFontLines()[1]
     )
 
     let mdAligment: mdFlush[] = firstRowAligment.map(
