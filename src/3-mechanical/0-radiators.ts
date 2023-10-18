@@ -7,7 +7,7 @@ export namespace Radiator {
   /**
    * Returns all Ocean Radiator model names
    */
-  export function allModels(): string[] {
+  export const allModels = (): string[] => {
     let list: string[] = [];
 
     for (let model of models) {
@@ -16,7 +16,7 @@ export namespace Radiator {
       }
     }
 
-    return list;
+    return list
   }
 
   export interface radiator {
@@ -85,7 +85,7 @@ export namespace Radiator {
    * @param model - Model name
    * @returns Radiator Object selected
    */
-  export function select(model: string): Radiator.radiator {
+  export const select = (model: string): Radiator.radiator => {
     let [modelPanelHeight, modelWidth] = model.split("/");
     let [thisPanel, modelHeight] = modelPanelHeight.split(" ");
     let thisHeight = parseInt(modelHeight);

@@ -1,5 +1,5 @@
 export namespace InterfaceUtils {
-  export function columnNumberToLetter(column: number): string {
+  export const columnNumberToLetter = (column: number): string => {
     let temp, letter = '';
     while (column > 0) {
       temp = (column - 1) % 26;
@@ -13,7 +13,7 @@ export namespace InterfaceUtils {
    * Range by name on active spreadsheet and throw exceptions
    * @param name - Range Name
    */
-  export function rangeByName(name: string): GoogleAppsScript.Spreadsheet.Range {
+  export const rangeByName = (name: string): GoogleAppsScript.Spreadsheet.Range => {
     let ss = SpreadsheetApp.getActiveSpreadsheet();
     let range = ss.getRangeByName(name);
 
@@ -24,17 +24,17 @@ export namespace InterfaceUtils {
     return range;
   }
 
-  export function isEmptyLine(array: any[]) {
+  export const isEmptyLine = (array: any[]): boolean => {
     return array.filter(x => x == "" || x == null).length == array.length;
   }
 }
 
 export namespace LogUtils {
-  function variableName(variable: any): string {
+  const variableName = (variable: any): string => {
     return Object.keys({ variable })[0];
   }
 
-  function checkNullVariable(value: any): boolean {
+  const checkNullVariable = (value: any): boolean => {
 
     let checkNaN = Number.isNaN(value);
     let checkNull = value == null;
@@ -43,7 +43,7 @@ export namespace LogUtils {
     return (checkNaN || checkNull || checkUndefined);
   }
 
-  export function checkVariables(variables: [string, any][]) {
+  export const checkVariables = (variables: [string, any][]): void => {
     if (variables.map(array => checkNullVariable(array[1])).indexOf(true) > -1) {
       Logger.log(variables);
     }

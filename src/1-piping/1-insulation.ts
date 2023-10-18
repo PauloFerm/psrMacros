@@ -37,10 +37,10 @@ export namespace InsulationEE {
    * @param thickness - Insulation tickness
    * @returns Tube Object selected
    */
-  export function thisTube(
+  export const thisTube = (
     pipeExternalDiameter: number,
     thickness: number
-  ): Piping.tube {
+  ): Piping.tube => {
 
     let thicknessIndex = thicknesses.indexOf(thickness);
     let closestDiameter = MathUtils.closestValue(diameters, pipeExternalDiameter);

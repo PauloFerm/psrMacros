@@ -25,10 +25,10 @@ export namespace MathUtils {
    * @param array1 - b_i
    * @returns sum(a_i * a_b)
    */
-  export function dotProduct(
+  export const dotProduct = (
     array0: number[],
     array1: number[]
-  ): number {
+  ): number => {
     
     if (array0.length != array1.length) {
       throw 'Arrays must have same sizes!';
@@ -44,11 +44,11 @@ export namespace MathUtils {
    * @param value - Value to search
    * @param up - Round up?
    */
-  export function closestValue(
+  export const closestValue = (
     array: readonly number[],
     value: number,
     up: boolean = true
-  ) {
+  ): number => {
 
     let response = NaN;
 
@@ -61,15 +61,11 @@ export namespace MathUtils {
     return response;
   }
 
-  function zeros(n: number) {
-    let array = new Array(n);
-    for (let i = n; i--;) {
-      array[i] = 0;
-    }
-    return array
+  const zeros = (n: number): number[] => {
+    return new Array(n).fill(0)
   }
 
-  function denominator(i: number, points: number[][]) {
+  const denominator = (i: number, points: number[][]): number => {
     let result = 1;
     let x_i = points[i][0];
     for (let j=points.length; j--;) {
@@ -81,7 +77,7 @@ export namespace MathUtils {
     return result
   }
 
-  function polynomialInterpolation(i: number, points: number[][]) {
+  const polynomialInterpolation = (i: number, points: number[][]): number[] => {
     let coefficients = zeros(points.length);
     coefficients[0] = 1 / denominator(i, points);
 
@@ -109,7 +105,7 @@ export namespace MathUtils {
    * Coefficients by Lagrange Interpolation
    * @param points Points array to generate polynomial coefficients
    */
-  export function LagrangeInterpolation(points: number[][]) {
+  export const LagrangeInterpolation = (points: number[][]): number[] => {
     let polynomial = zeros(points.length);
     let coefficients;
 

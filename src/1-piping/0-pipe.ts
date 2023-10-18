@@ -66,10 +66,10 @@ export namespace Piping {
    * @param insulation - Insulation Tube Object
    * @returns Total thermal resistence
    */
-    export function insulatedResistence(
+    export const insulatedResistence = (
       pipe: Piping.pipe,
       insulation: Piping.tube
-    ): number {
+    ): number => {
   
       let pipeResistence = HeatTransfer.cylindricResistence(
             pipe.diameter.external / 1000, 
