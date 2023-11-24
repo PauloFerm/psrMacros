@@ -39,6 +39,10 @@ const mainMenu = async () => {
         value: "change"
       },
       {
+        name: "Open project Sheet",
+        value: "open"
+      },
+      {
         name: "Exit Menu",
         value: "exit"
       }
@@ -54,9 +58,12 @@ const mainMenu = async () => {
       break;
     case "change":
       let selectedProject = await selectProjectMenu();
-      functions.changeClaspProject(selectedProject.id);
+      functions.changeClaspProject(selectedProject.scriptId);
       console.log(`Current project: ${selectedProject.name}`);
       mainMenu();
+      break;
+    case "open":
+      functions.openSheet(currentProject);
       break;
     case "exit":
       process.exit(1);
