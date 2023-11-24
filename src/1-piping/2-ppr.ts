@@ -90,21 +90,18 @@ export namespace PPR {
     let resistence = NaN;
 
     if (insulationThickness == null) {
-
       resistence = HeatTransfer.cylindricResistence(
         thisPipe.diameter.external / 1000,
         thisPipe.diameter.internal / 1000,
         thisPipe.conductivity);
 
     } else if (insulationThickness != null) {
-
       let thisInsulation: Piping.tube = InsulationEE.thisTube(
         thisPipe.diameter.external,
         insulationThickness);
 
       resistence = Piping.insulatedResistence(thisPipe, thisInsulation);
       
-
     } else {
       throw "Something is wrong with the pprHeatLoss"
     }
