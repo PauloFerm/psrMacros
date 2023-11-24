@@ -8,11 +8,11 @@ export namespace HeatSystem {
    * Update heat loss on piping sections
    */
   export const updatePipeHeatLoss = (): void => {
-    let conditionsRange = InterfaceUtils.rangeByName("HeatSystemConditions");
-    let pipeDiameterRange = InterfaceUtils.rangeByName("PipeSection");
-    let pipeInsulationRange = InterfaceUtils.rangeByName("PipeSectionHeat")
+    let heatSystemConditions = InterfaceUtils.rangeByName("HeatSystemConditions");
+    let pipeSection = InterfaceUtils.rangeByName("PipeSection");
+    let pipeSectionHeat = InterfaceUtils.rangeByName("PipeSectionHeat")
 
-    let conditions = StatusBoard.parseBoard(conditionsRange).sections
+    let conditions = StatusBoard.parseBoard(heatSystemConditions).sections
                     .filter(s => s.title == "Condiciones" )[0];
 
     let tempHigh = conditions.properties
@@ -27,8 +27,8 @@ export namespace HeatSystem {
     let PPRpressure = conditions.properties
                     .filter(p => p.name == "PPR Presión Nominal")[0].value;
 
-    if (typeof tempHigh != 'number' || 
-      typeof tempLow != 'number' || 
+    if (typeof tempHigh != 'number' ||
+      typeof tempLow != 'number' ||
       typeof tempEx != 'number' ||
       typeof PPRpressure != 'string') {
       throw 'Something happend with system conditions';
@@ -41,13 +41,13 @@ export namespace HeatSystem {
     let deltaTempHigh = tempHigh - tempEx;
     let deltaTempLow = tempLow - tempEx;
 
-    let pipeValues = pipeDiameterRange.getValues();
-    let insulatedValues = pipeInsulationRange.getValues();
+    let pipeValues = pipeSection.getValues();
+    let insulatedValues = pipeSectionHeat.getValues();
 
     for (let i = 2; i < pipeValues.length; i++) {
       if (InterfaceUtils.isEmptyLine(pipeValues[i]) ||
         // pipeValues[i][0].length != pipeValues[i][1].length ||
-        insulatedValues[i][0] == "") {
+        insulatedValues[i][0] == "") {  // insulated value non zero
         continue;
       }
       
@@ -65,18 +65,18 @@ export namespace HeatSystem {
       ]);
     }
 
-    pipeInsulationRange.setValues(insulatedValues);
+    pipeSectionHeat.setValues(insulatedValues);
   }
 
   /**
   * Update Flow State on piping sections
   */
   export const updatePipeFlowState = (): void => {
-    let conditionsRange = InterfaceUtils.rangeByName("HeatSystemConditions");
+    let heatSystemConditions = InterfaceUtils.rangeByName("HeatSystemConditions");
     let pipeSectionRange = InterfaceUtils.rangeByName("PipeSection");
-    let pipeFlowRange = InterfaceUtils.rangeByName("PipeSectionFlowState");
+    let pipeSectionFlowState = InterfaceUtils.rangeByName("PipeSectionFlowState");
 
-    let PPRpressure = StatusBoard.parseBoard(conditionsRange).sections
+    let PPRpressure = StatusBoard.parseBoard(heatSystemConditions).sections
       .filter(s => s.title == "Condiciones")[0].properties
       .filter(p => p.name == "PPR Presión Nominal")[0].value;
 
@@ -85,8 +85,8 @@ export namespace HeatSystem {
     }
     
     let pipeSectionValues = pipeSectionRange.getValues();
-    let pipeFlowValues = pipeFlowRange.getValues();
-    let pipeFlowFormulas = pipeFlowRange.getFormulas();
+    let pipeFlowValues = pipeSectionFlowState.getValues();
+    let pipeFlowFormulas = pipeSectionFlowState.getFormulas();
 
     let radiatorData = InterfaceUtils.rangeByName("Radiators").getValues();
 
@@ -132,7 +132,7 @@ export namespace HeatSystem {
       pipeFlowValues[i][2] = volume;
     }
 
-    pipeFlowRange.setValues(pipeFlowValues);
+    pipeSectionFlowState.setValues(pipeFlowValues);
   }
-   
+
 }
