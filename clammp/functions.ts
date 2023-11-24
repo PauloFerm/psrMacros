@@ -13,7 +13,7 @@ export const currentProject = () => {
     if (current == undefined) { 
         throw new Error("Unregistered Project"); 
     }
-    
+
     return current
 }
 
