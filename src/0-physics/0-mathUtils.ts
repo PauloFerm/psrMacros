@@ -53,9 +53,9 @@ export namespace MathUtils {
     let response = NaN;
 
     if (up) {
-      response = Math.min(...array.filter( v => v > value ));
+      response = Math.min(...array.filter( v => v >= value ));
     } else {
-      response = Math.max(...array.filter( v => v < value ));
+      response = Math.max(...array.filter( v => v <= value ));
     }
 
     return response;
@@ -68,7 +68,7 @@ export namespace MathUtils {
   const denominator = (i: number, points: number[][]): number => {
     let result = 1;
     let x_i = points[i][0];
-    for (let j=points.length; j--;) {
+    for (let j = points.length; j--;) {
       if (i != j) {
         result *= x_i - points[j][0]
       }
@@ -117,8 +117,6 @@ export namespace MathUtils {
       }
     }
 
-    return polynomial; //.map( L => Math.round(L * 1000) / 1000);
+    return polynomial
   }
 }
-
-// export const MathForTesting = MathUtils;
