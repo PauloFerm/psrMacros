@@ -1,9 +1,10 @@
 export namespace Radiator {
-  const radiatorWidths = [ 400, 500, 600, 700, 800, 900, 1000, 
-                            1100, 1200, 1300, 1400, 1500, 1600, 1800, 
-                            2000, 2200, 2400, 2600, 2800, 3000 ];
-  const models = [ "EK 500",	"DK 300",	"DK 500" ];
-  
+  const radiatorWidths = [
+    400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600,
+    1800, 2000, 2200, 2400, 2600, 2800, 3000,
+  ];
+  const models = ["EK 500", "DK 300", "DK 500"];
+
   /**
    * Returns all Ocean Radiator model names
    */
@@ -16,8 +17,8 @@ export namespace Radiator {
       }
     }
 
-    return list
-  }
+    return list;
+  };
 
   export interface radiator {
     brand: string;
@@ -26,13 +27,13 @@ export namespace Radiator {
     height: 300 | 500;
     thicknees: 100;
     power: {
-      kw: number,
-      kcalh: number
+      kw: number;
+      kcalh: number;
     };
     flow: number;
     volume: number;
     price?: number;
-  };
+  }
 
   const power = [
     [389, 503, 756],
@@ -54,7 +55,7 @@ export namespace Radiator {
     [2335, 3019, 4536],
     [2530, 3271, 4914],
     [2724, 3522, 5292],
-    [2919, 3774, 5670]
+    [2919, 3774, 5670],
   ];
 
   const price = [
@@ -77,7 +78,7 @@ export namespace Radiator {
     [250, 335, 434],
     [268, 358, 466],
     [284, 386, 498],
-    [301, 411, 533]
+    [301, 411, 533],
   ];
 
   /**
@@ -89,8 +90,8 @@ export namespace Radiator {
     let [modelPanelHeight, modelWidth] = model.split("/");
     let [thisPanel, modelHeight] = modelPanelHeight.split(" ");
     let thisHeight = parseInt(modelHeight);
-    let thisWidth = parseInt(modelWidth); 
-  
+    let thisWidth = parseInt(modelWidth);
+
     if (thisPanel != "EK" && thisPanel != "DK") {
       throw `Error in radiator model ${thisPanel}`;
     }
@@ -116,11 +117,11 @@ export namespace Radiator {
       volume: thisWidth / 104.167,
       power: {
         kcalh: power[widthIndex][modelIndex],
-        kw: power[widthIndex][modelIndex] / 860.42
+        kw: power[widthIndex][modelIndex] / 860.42,
       },
-      price: price[widthIndex][modelIndex]
+      price: price[widthIndex][modelIndex],
     };
 
     return thisRadiator;
-  }
+  };
 }
