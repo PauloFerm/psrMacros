@@ -7,11 +7,11 @@ export namespace MathUtils {
    */
   export class Polynomial {
     coefficients: number[];
-  
+
     constructor(coefficients: number[]) {
       this.coefficients = coefficients;
     }
-  
+
     evaluate(x: number): number {
       return this.coefficients
         .map((c, i) => c * x ** i)
@@ -25,18 +25,15 @@ export namespace MathUtils {
    * @param array1 - b_i
    * @returns sum(a_i * a_b)
    */
-  export const dotProduct = (
-    array0: number[],
-    array1: number[]
-  ): number => {
-    
+  export const dotProduct = (array0: number[], array1: number[]): number => {
     if (array0.length != array1.length) {
-      throw 'Arrays must have same sizes!';
+      throw new TypeError("Arrays must have same length!");
     }
 
-    return array0.map((x, i) => array0[i] * array1[i])
+    return array0
+      .map((x, i) => array0[i] * array1[i])
       .reduce((sum, now) => sum + now, 0);
-  }
+  };
 
   /**
    * Pick the closest value in array
@@ -49,57 +46,48 @@ export namespace MathUtils {
     value: number,
     up: boolean = true
   ): number => {
-
-    let response = NaN;
-
     if (up) {
-      response = Math.min(...array.filter( v => v >= value ));
+      return Math.min(...array.filter((v) => v >= value));
     } else {
-      response = Math.max(...array.filter( v => v <= value ));
+      return Math.max(...array.filter((v) => v <= value));
     }
-
-    return response;
-  }
+  };
 
   const zeros = (n: number): number[] => {
-    return new Array(n).fill(0)
-  }
+    return new Array(n).fill(0);
+  };
 
   const denominator = (i: number, points: number[][]): number => {
-    let result = 1;
-    let x_i = points[i][0];
-    for (let j = points.length; j--;) {
-      if (i != j) {
-        result *= x_i - points[j][0]
-      }
-    }
+    let res = points
+      .filter((x, j) => j != i)
+      .reduceRight((prod, row) => {
+        return prod * (points[i][0] - row[0]);
+      }, 1);
 
-    return result
-  }
+    return res;
+  };
 
   const polynomialInterpolation = (i: number, points: number[][]): number[] => {
     let coefficients = zeros(points.length);
     coefficients[0] = 1 / denominator(i, points);
-
-    let newCoefficients;
 
     for (let k = 0; k < points.length; k++) {
       if (k == i) {
         continue;
       }
 
-      newCoefficients = zeros(points.length);
+      let newCoefficients = zeros(points.length);
 
-      for (let j = (k < i) ? k+1 : k; j--;) {
-        newCoefficients[j+1] += coefficients[j];
+      for (let j = k < i ? k + 1 : k; j--; ) {
+        newCoefficients[j + 1] += coefficients[j];
         newCoefficients[j] -= points[k][0] * coefficients[j];
       }
 
       coefficients = newCoefficients;
     }
 
-    return coefficients
-  }
+    return coefficients;
+  };
 
   /**
    * Coefficients by Lagrange Interpolation
@@ -107,16 +95,15 @@ export namespace MathUtils {
    */
   export const LagrangeInterpolation = (points: number[][]): number[] => {
     let polynomial = zeros(points.length);
-    let coefficients;
 
     for (let i = 0; i < points.length; ++i) {
-      coefficients = polynomialInterpolation(i, points);
+      let coefficients = polynomialInterpolation(i, points);
 
       for (let k = 0; k < points.length; ++k) {
         polynomial[k] += points[i][1] * coefficients[k];
       }
     }
 
-    return polynomial
-  }
+    return polynomial;
+  };
 }
