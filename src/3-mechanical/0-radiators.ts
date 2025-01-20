@@ -1,4 +1,14 @@
 export namespace Radiator {
+  // ["Altura", "Ancho", "Kcal/H", "Ejes", "Precio"],
+  const towelDryers = [
+    [700, 400, 221, 350, 89.22],
+    [700, 450, 242, 400, 91.97],
+    [700, 600, 305, 550, 117],
+    [1160, 600, 486, 550, 181],
+    [1385, 600, 605, 550, 214],
+    [1195, 750, 1100, 700, 224],
+  ];
+
   const radiatorWidths = [
     400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600,
     1800, 2000, 2200, 2400, 2600, 2800, 3000,
@@ -6,7 +16,7 @@ export namespace Radiator {
   const models = ["EK 500", "DK 300", "DK 500"];
 
   /**
-   * Returns all Ocean Radiator model names
+   * Returns all Radiator model names
    */
   export const allModels = (): string[] => {
     let list: string[] = [];
@@ -17,14 +27,18 @@ export namespace Radiator {
       }
     }
 
+    for (let towelDry of towelDryers) {
+      list.push(`TL ${towelDry[0]}/${towelDry[1]}`);
+    }
+
     return list;
   };
 
   export interface radiator {
     brand: string;
-    panel: "EK" | "DK";
+    panel: "EK" | "DK" | "TL";
     width: number;
-    height: 300 | 500;
+    height: 300 | 500 | 700 | 1160 | 1385 | 1195;
     thicknees: 100;
     power: {
       kw: number;
@@ -92,7 +106,36 @@ export namespace Radiator {
     let thisHeight = parseInt(modelHeight);
     let thisWidth = parseInt(modelWidth);
 
-    if (thisPanel != "EK" && thisPanel != "DK") {
+    /** TowelDryer handle */
+    if (thisPanel == "TL") {
+      let towelDry = towelDryers.filter(
+        (t) => t[0] == thisHeight && t[1] == thisWidth
+      )[0];
+
+      if (towelDry == undefined) {
+        throw `Error in radiator model ${thisPanel}`;
+      }
+
+      let thisRadiator: radiator = {
+        brand: "Ocean",
+        panel: "TL",
+        width: thisWidth,
+        height: thisHeight as 700 | 1160 | 1385 | 1195,
+        thicknees: 100,
+        flow: towelDry[2] / 860.42 / 11,
+        volume: thisWidth / 104.167,
+        power: {
+          kcalh: towelDry[2],
+          kw: towelDry[2] / 860.42,
+        },
+        price: towelDry[4],
+      };
+
+      return thisRadiator;
+    }
+
+    /** Radiator Panel handle */
+    if (thisPanel != "EK" && thisPanel != "DK" && thisPanel != "TL") {
       throw `Error in radiator model ${thisPanel}`;
     }
 
