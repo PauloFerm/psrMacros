@@ -2,16 +2,16 @@ import { InterfaceUtils, LogUtils } from "../8-interface/0-utils";
 import { StatusBoard } from "../8-interface/1-boards";
 import { PPR } from "../1-piping/2-ppr";
 
+import { Ranges } from "./0-ranges";
+
 export namespace HeatSystem {
   /**
    * Update heat loss on piping sections
    */
   export const updatePipeHeatLoss = (): void => {
-    let heatSystemConditions = InterfaceUtils.rangeByName(
-      "HeatSystemConditions"
-    );
-    let pipeSection = InterfaceUtils.rangeByName("PipeSection");
-    let pipeSectionHeat = InterfaceUtils.rangeByName("PipeSectionHeat");
+    let heatSystemConditions = Ranges.heatSystemConditions;
+    let pipeSection = Ranges.pipeSection;
+    let pipeSectionHeat = Ranges.pipeSectionHeat;
 
     let conditions = StatusBoard.parseBoard(
       heatSystemConditions
@@ -93,13 +93,9 @@ export namespace HeatSystem {
    * Update Flow State on piping sections
    */
   export const updatePipeFlowState = (): void => {
-    let heatSystemConditions = InterfaceUtils.rangeByName(
-      "HeatSystemConditions"
-    );
-    let pipeSectionRange = InterfaceUtils.rangeByName("PipeSection");
-    let pipeSectionFlowState = InterfaceUtils.rangeByName(
-      "PipeSectionFlowState"
-    );
+    let heatSystemConditions = Ranges.heatSystemConditions;
+    let pipeSectionRange = Ranges.pipeSection;
+    let pipeSectionFlowState = Ranges.pipeSectionFlowState;
 
     let PPRpressure = StatusBoard.parseBoard(heatSystemConditions)
       .sections.filter((s) => s.title == "Condiciones")[0]
@@ -113,7 +109,7 @@ export namespace HeatSystem {
     let pipeFlowValues = pipeSectionFlowState.getValues();
     let pipeFlowFormulas = pipeSectionFlowState.getFormulas();
 
-    let radiatorData = InterfaceUtils.rangeByName("Radiators").getValues();
+    let radiatorData = Ranges.radiators.getValues();
 
     for (let i = 2; i < pipeSectionValues.length; i++) {
       if (InterfaceUtils.isEmptyLine(pipeSectionValues[i])) {

@@ -1,4 +1,4 @@
-import { ThermalDemand } from "./9-macros/0-thermalDemand";
+import { ThermalDemand } from "./9-macros/2-thermalDemand";
 import { HeatSystem } from "./9-macros/1-heatSystem";
 import { mdTables } from "./8-interface/2-mdtables";
 

@@ -1,6 +1,8 @@
 import { Radiator } from "../3-mechanical/0-radiators";
 import { InterfaceUtils } from "../8-interface/0-utils";
 
+import { Ranges } from "./0-ranges";
+
 export namespace ThermalDemand {
   /**
    * Insert radiator model validation
@@ -21,7 +23,7 @@ export namespace ThermalDemand {
    * Update radiator data
    */
   export const updateRadiator = (): void => {
-    let range = InterfaceUtils.rangeByName("Radiators");
+    let range = Ranges.radiators;
     let values = range.getValues();
     let formulas = range.getFormulas();
 

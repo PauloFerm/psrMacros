@@ -13,7 +13,7 @@ export namespace Radiator {
     400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600,
     1800, 2000, 2200, 2400, 2600, 2800, 3000,
   ];
-  const models = ["EK 500", "DK 300", "DK 500"];
+  const models = ["DK 500", "DK 300", "EK 500"];
 
   /**
    * Returns all Radiator model names
@@ -21,14 +21,14 @@ export namespace Radiator {
   export const allModels = (): string[] => {
     let list: string[] = [];
 
+    for (let towelDry of towelDryers) {
+      list.push(`TL ${towelDry[0]}/${towelDry[1]}`);
+    }
+
     for (let model of models) {
       for (let width of radiatorWidths) {
         list.push(model + `/${width}`);
       }
-    }
-
-    for (let towelDry of towelDryers) {
-      list.push(`TL ${towelDry[0]}/${towelDry[1]}`);
     }
 
     return list;
