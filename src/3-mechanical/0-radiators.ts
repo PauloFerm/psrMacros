@@ -13,7 +13,7 @@ export namespace Radiator {
     400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600,
     1800, 2000, 2200, 2400, 2600, 2800, 3000,
   ];
-  const models = ["DK 500", "DK 300", "EK 500"];
+  const models = ["EK 500", "DK 300", "DK 500"];
 
   /**
    * Returns all Radiator model names
@@ -96,6 +96,20 @@ export namespace Radiator {
   ];
 
   /**
+   * Flow rate by heat power
+   * @param power in kW
+   * @returns
+   */
+  const flowByPower = (power: number) => {
+    let density = 1000;
+    let specificHeat = 4.18;
+    let deltaT = 20;
+    let flow = power / (density * specificHeat * deltaT);
+
+    return flow * 3600;
+  };
+
+  /**
    * Select radiator by model
    * @param model - Model name
    * @returns Radiator Object selected
@@ -122,7 +136,7 @@ export namespace Radiator {
         width: thisWidth,
         height: thisHeight as 700 | 1160 | 1385 | 1195,
         thicknees: 100,
-        flow: towelDry[2] / 860.42 / 11,
+        flow: flowByPower(towelDry[2] / 860.42),
         volume: thisWidth / 104.167,
         power: {
           kcalh: towelDry[2],
@@ -156,7 +170,7 @@ export namespace Radiator {
       width: thisWidth,
       height: thisHeight,
       thicknees: 100,
-      flow: power[widthIndex][modelIndex] / 860.42 / 11,
+      flow: flowByPower(power[widthIndex][modelIndex] / 860.42),
       volume: thisWidth / 104.167,
       power: {
         kcalh: power[widthIndex][modelIndex],
