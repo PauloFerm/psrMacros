@@ -53,30 +53,40 @@ export namespace HeatSystem {
     let insulatedValues = pipeSectionHeat.getValues();
 
     for (let i = 2; i < pipeValues.length; i++) {
-      if (
-        InterfaceUtils.isEmptyLine(pipeValues[i]) ||
-        // pipeValues[i][0].length != pipeValues[i][1].length ||
-        insulatedValues[i][0] == ""
-      ) {
-        // insulated value non zero
+      if (InterfaceUtils.isEmptyLine(pipeValues[i])) {
         continue;
       }
 
       let diameter = pipeValues[i][2];
       let insulationThickness = insulatedValues[i][0];
 
-      insulatedValues[i][1] = PPR.heatLoss(
-        PPRpressure,
-        diameter,
-        deltaTempHigh,
-        insulationThickness
-      );
-      insulatedValues[i][2] = PPR.heatLoss(
-        PPRpressure,
-        diameter,
-        deltaTempLow,
-        insulationThickness
-      );
+      if (insulatedValues[i][0] == "") {
+        // No insulation thickness
+        insulatedValues[i][1] = PPR.heatLoss(
+          PPRpressure,
+          diameter,
+          deltaTempHigh
+        );
+        insulatedValues[i][2] = PPR.heatLoss(
+          PPRpressure,
+          diameter,
+          deltaTempLow
+        );
+      } else {
+        // If insulation thickness is defined
+        insulatedValues[i][1] = PPR.heatLoss(
+          PPRpressure,
+          diameter,
+          deltaTempHigh,
+          insulationThickness
+        );
+        insulatedValues[i][2] = PPR.heatLoss(
+          PPRpressure,
+          diameter,
+          deltaTempLow,
+          insulationThickness
+        );
+      }
 
       LogUtils.checkVariables([
         ["Diameter", diameter],

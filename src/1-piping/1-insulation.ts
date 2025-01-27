@@ -51,13 +51,13 @@ export namespace InsulationEE {
     let diameterIndex = diameters.indexOf(closestDiameter);
 
     if (thicknessIndex < 0 || diameterIndex < 0) {
-      throw `Insulation d: ${pipeExternalDiameter}, e: ${thickness} doesn't exists`;
+      throw `Insulation Ø ${pipeExternalDiameter} - ε ${thickness} doesn't exists`;
     }
 
     let thisPrice = price[diameterIndex][thicknessIndex];
 
     if (Number.isNaN(thisPrice)) {
-      throw `Insulation d: ${pipeExternalDiameter}, e: ${thickness} doesn't exists`;
+      throw `Insulation Ø ${pipeExternalDiameter} - ε ${thickness} doesn't exists`;
     }
 
     return {
