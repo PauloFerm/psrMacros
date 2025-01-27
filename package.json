@@ -8,11 +8,10 @@
     "@types/jest": "^29.5.5",
     "@types/node": "^20.5.0",
     "jest": "^29.7.0",
-    "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1"
+    "ts-jest": "^29.1.1"
   },
   "scripts": {
-    "menu": "npx ts-node clammp launchMenu",
-    "test": "npx jest"
+    "menu": "bun clammp launchMenu",
+    "test": "bun jest"
   }
 }
